@@ -1,1 +1,1 @@
-@include('page.frontend.index')
+
