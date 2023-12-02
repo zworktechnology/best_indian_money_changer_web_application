@@ -19,7 +19,12 @@
                 </li>
             </ul>
 
-            
+            <ul>
+                <li class="menu-title"><span>Inventory</span></li>
+                <li class="{{ Route::is('currency.index, currency.store, currency.edit, currency.delete') ? 'active' : '' }}">
+                    <a href="{{ route('currency.index') }}"><i class="fe fe-dollar-sign"></i><span>Currency</span></a>
+                </li>
+            </ul>
 
         </div>
     </div>

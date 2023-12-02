@@ -48,7 +48,7 @@
                                         <div class="col-6">
                                         </div>
                                         <div class="col-6 text-end">
-                                            <a class="forgot-link" href="javascript::void(o);">Forgot Password ?</a>
+                                            {{-- <a class="forgot-link" href="javascript::void(o);">Forgot Password ?</a> --}}
                                         </div>
                                     </div>
                                 </div>
