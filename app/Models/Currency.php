@@ -22,4 +22,8 @@ class Currency extends Model
     {
         return $this->hasMany(Purchase::class, 'currency_id');
     }
+    public function sale()
+    {
+        return $this->hasMany(Sale::class, 'currency_id');
+    }
 }

@@ -27,6 +27,9 @@
                 <li class="{{ Route::is('purchase.index', 'purchase.store', 'purchase.edit', 'purchase.delete') ? 'active' : '' }}">
                     <a href="{{ route('purchase.index') }}"><i class="fe fe-download"></i><span>Purchase</span></a>
                 </li>
+                <li class="{{ Route::is('sale.index', 'sale.store', 'sale.edit', 'sale.delete') ? 'active' : '' }}">
+                    <a href="{{ route('sale.index') }}"><i class="fe fe-upload"></i><span>Sale</span></a>
+                </li>
             </ul>
 
         </div>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,4 +48,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/purchase/edit/{unique_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     // DELETE
     Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/purchase/delete/{unique_id}', [PurchaseController::class, 'delete'])->name('purchase.delete');
+});
+// SALE CONTROLLER
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    // INDEX
+    Route::middleware(['auth:sanctum', 'verified'])->get('/zwork_technology/sale', [SaleController::class, 'index'])->name('sale.index');
+    // STORE
+    Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/sale/store', [SaleController::class, 'store'])->name('sale.store');
+    // EDIT
+    Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/sale/edit/{unique_id}', [SaleController::class, 'edit'])->name('sale.edit');
+    // DELETE
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/sale/delete/{unique_id}', [SaleController::class, 'delete'])->name('sale.delete');
 });
