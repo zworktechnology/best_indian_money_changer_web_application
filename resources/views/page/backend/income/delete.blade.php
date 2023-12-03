@@ -2,13 +2,13 @@
       <div class="modal-content modal-filled">
          <div class="modal-body">
             <div class="form-header">
-               <h6 class="text-black">Delete Debit Note Detail</h6>
+               <h6 class="text-black">Delete Credit Note Detail</h6>
                <p class="text-black">Are you sure want to delete?</p>
             </div>
             <div class="modal-btn delete-action">
                <div class="row">
 
-                  <form autocomplete="off" method="POST" action="{{ route('expense.delete', [$expense_index_datas->unique_id]) }}">
+                  <form autocomplete="off" method="POST" action="{{ route('income.delete', [$income_index_datas->unique_id]) }}">
                      @method('PUT')
                      @csrf
 

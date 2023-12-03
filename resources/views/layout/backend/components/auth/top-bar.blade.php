@@ -24,17 +24,14 @@
                     <span class="animate-circle"></span>
                 </span>
                 <span class="user-content">
-                    <span class="user-details">Admin</span>
                     <span class="user-name">{{ auth()->user()->name }}</span>
+                    <span class="user-details">{{ auth()->user()->email }}</span>
                 </span>
             </a>
             <div class="dropdown-menu menu-drop-user">
                 <div class="profilemenu">
                     <div class="subscription-menu">
                         <ul>
-                            <li>
-                                <a class="dropdown-item" href="javascript::void(o);">Profile</a>
-                            </li>
                             <li>
                                 <a class="dropdown-item" href="javascript::void(o);">Settings</a>
                             </li>

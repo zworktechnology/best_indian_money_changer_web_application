@@ -7,10 +7,10 @@
 
       <div class="page-header">
          <div class="content-page-header">
-            <h6>Debit Note</h6>
+            <h6>Credit Note</h6>
             <div class="list-btn">
                 <div style="display: flex;">
-                    <form autocomplete="off" method="POST" action="{{ route('expense.index') }}">
+                    <form autocomplete="off" method="POST" action="{{ route('income.index') }}">
                         @method('PUT')
                         @csrf
                         <div style="display: flex">
@@ -42,38 +42,38 @@
                               </tr>
                            </thead>
                            <tbody>
-                           @foreach ($expense_index_data as $keydata => $expense_index_datas)
+                           @foreach ($income_index_data as $keydata => $income_index_datas)
                               <tr>
                                  <td>{{ ++$keydata }}</td>
-                                 <td>{{ date('h:i A', strtotime($expense_index_datas->time)) }}</td>
-                                 <td>{{ $expense_index_datas->amount }}</td>
-                                 <td>{{ $expense_index_datas->description }}</td>
+                                 <td>{{ date('h:i A', strtotime($income_index_datas->time)) }}</td>
+                                 <td>{{ $income_index_datas->amount }}</td>
+                                 <td>{{ $income_index_datas->description }}</td>
                                  <td>
                                     <ul class="list-unstyled hstack gap-1 mb-0">
                                        <li>
-                                          <a class="badge bg-warning" href="#edit{{ $expense_index_datas->unique_id }}" data-bs-toggle="modal"
-                                          data-bs-target=".expenseedit-modal-xl{{ $expense_index_datas->unique_id }}" style="color: white;">Edit</a>
+                                          <a class="badge bg-warning" href="#edit{{ $income_index_datas->unique_id }}" data-bs-toggle="modal"
+                                          data-bs-target=".incomeedit-modal-xl{{ $income_index_datas->unique_id }}" style="color: white;">Edit</a>
                                        </li>
                                        <li>
-                                          <a href="#delete{{ $expense_index_datas->unique_id }}" data-bs-toggle="modal"
-                                          data-bs-target=".expensedelete-modal-xl{{ $expense_index_datas->unique_id }}" class="badge bg-danger" style="color: white;">Delete</a>
+                                          <a href="#delete{{ $income_index_datas->unique_id }}" data-bs-toggle="modal"
+                                          data-bs-target=".incomedelete-modal-xl{{ $income_index_datas->unique_id }}" class="badge bg-danger" style="color: white;">Delete</a>
                                        </li>
                                     </ul>
 
                                  </td>
                               </tr>
 
-                              <div class="modal fade expenseedit-modal-xl{{ $expense_index_datas->unique_id }}"
+                              <div class="modal fade incomeedit-modal-xl{{ $income_index_datas->unique_id }}"
                                     tabindex="-1" role="dialog" data-bs-backdrop="static"
-                                    aria-labelledby="expenseeditLargeModalLabel{{ $expense_index_datas->unique_id }}"
+                                    aria-labelledby="incomeeditLargeModalLabel{{ $income_index_datas->unique_id }}"
                                     aria-hidden="true">
-                                    @include('page.backend.expense.edit')
+                                    @include('page.backend.income.edit')
                               </div>
-                              <div class="modal fade expensedelete-modal-xl{{ $expense_index_datas->unique_id }}"
+                              <div class="modal fade incomedelete-modal-xl{{ $income_index_datas->unique_id }}"
                                     tabindex="-1" role="dialog"data-bs-backdrop="static"
-                                    aria-labelledby="expensedeleteLargeModalLabel{{ $expense_index_datas->unique_id }}"
+                                    aria-labelledby="incomedeleteLargeModalLabel{{ $income_index_datas->unique_id }}"
                                     aria-hidden="true">
-                                    @include('page.backend.expense.delete')
+                                    @include('page.backend.income.delete')
                               </div>
                            @endforeach
                            </tbody>
@@ -84,7 +84,7 @@
             </div>
          </div>
          <div class="col-sm-3">
-            @include('page.backend.expense.create')
+            @include('page.backend.income.create')
          </div>
 
 

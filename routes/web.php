@@ -3,6 +3,7 @@
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
@@ -71,4 +72,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/expense/edit/{unique_id}', [ExpenseController::class, 'edit'])->name('expense.edit');
     // DELETE
     Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/expense/delete/{unique_id}', [ExpenseController::class, 'delete'])->name('expense.delete');
+});
+// INCOME CONTROLLER
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    // INDEX
+    Route::middleware(['auth:sanctum', 'verified'])->get('/zwork_technology/income', [IncomeController::class, 'index'])->name('income.index');
+    // STORE
+    Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/income/store', [IncomeController::class, 'store'])->name('income.store');
+    // EDIT
+    Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/income/edit/{unique_id}', [IncomeController::class, 'edit'])->name('income.edit');
+    // DELETE
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/income/delete/{unique_id}', [IncomeController::class, 'delete'])->name('income.delete');
 });
