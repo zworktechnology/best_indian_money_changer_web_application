@@ -11,7 +11,7 @@ class CurrencyController extends Controller
 {
     public function index()
     {
-        $currency_index_data = Currency::where('soft_delete', '!=', 1)->get();
+        $currency_index_data = Currency::where('soft_delete', '!=', 1)->latest('created_at')->get();
 
         return view('page.backend.currency.index', compact('currency_index_data'));
     }

@@ -21,8 +21,11 @@
 
             <ul>
                 <li class="menu-title"><span>Inventory</span></li>
-                <li class="{{ Route::is('currency.index, currency.store, currency.edit, currency.delete') ? 'active' : '' }}">
+                <li class="{{ Route::is('currency.index', 'currency.store', 'currency.edit', 'currency.delete') ? 'active' : '' }}">
                     <a href="{{ route('currency.index') }}"><i class="fe fe-dollar-sign"></i><span>Currency</span></a>
+                </li>
+                <li class="{{ Route::is('purchase.index', 'purchase.store', 'purchase.edit', 'purchase.delete') ? 'active' : '' }}">
+                    <a href="{{ route('purchase.index') }}"><i class="fe fe-download"></i><span>Purchase</span></a>
                 </li>
             </ul>
 

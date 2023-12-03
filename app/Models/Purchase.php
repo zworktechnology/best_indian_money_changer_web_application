@@ -5,21 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Currency extends Model
+class Purchase extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'unique_id',
-        'code',
-        'name',
-        'country',
+        'date',
+        'time',
+        'currency_id',
+        'purchases_count',
+        'purchases_count_per_price',
+        'total',
         'description',
         'soft_delete'
     ];
 
-    public function purchase()
+    public function currency()
     {
-        return $this->hasMany(Purchase::class, 'currency_id');
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 }
