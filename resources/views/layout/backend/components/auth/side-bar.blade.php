@@ -32,6 +32,13 @@
                 </li>
             </ul>
 
+            <ul>
+                <li class="menu-title"><span>Finance & Accounts</span></li>
+                <li class="{{ Route::is('expense.index', 'expense.store', 'expense.edit', 'expense.delete') ? 'active' : '' }}">
+                    <a href="{{ route('expense.index') }}"><i class="fe fe-book"></i><span>Debit Notes</span></a>
+                </li>
+            </ul>
+
         </div>
     </div>
 </div>
