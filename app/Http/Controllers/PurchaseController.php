@@ -21,6 +21,17 @@ class PurchaseController extends Controller
         return view('page.backend.purchase.index', compact('purchase_index_data', 'today_date', 'today_time', 'currency_data'));
     }
 
+
+    public function datefilter(Request $request) {
+        
+        $today_date = $request->get('from_date');
+        $today_time = Carbon::now()->format('H:i');
+        $purchase_index_data = Purchase::where('soft_delete', '!=', 1)->where('date', '=', $today_date)->latest('created_at')->get();
+        $currency_data = Currency::where('soft_delete', '!=', 1)->latest('created_at')->get();
+
+        return view('page.backend.purchase.index', compact('purchase_index_data', 'today_date', 'today_time', 'currency_data'));
+    }
+
     public function store(Request $request)
     {
         $data = new Purchase();

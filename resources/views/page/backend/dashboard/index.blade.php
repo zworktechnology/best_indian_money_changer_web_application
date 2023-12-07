@@ -10,12 +10,12 @@
                     </div>
                     <div class="list-btn">
                         <div style="display: flex;">
-                            <form autocomplete="off" method="POST" action="{{ route('income.index') }}">
+                            <form autocomplete="off" method="POST" action="{{ route('home.datefilter') }}">
                                 @method('PUT')
                                 @csrf
                                 <div style="display: flex">
                                     <div style="margin-right: 10px;"><input type="date" name="from_date"
-                                            class="form-control from_date" value=""></div>
+                                            class="form-control from_date" value="{{$today}}"></div>
                                     <div style="margin-right: 10px;"><input type="submit" class="btn btn-success"
                                             value="Filter" /></div>
                                 </div>
@@ -36,7 +36,7 @@
                                 <div class="dash-count">
                                     <div class="dash-title">Total Purchase</div>
                                     <div class="dash-counts">
-                                        <p>₹</p>
+                                        <p>₹ {{$tot_purchaseAmount}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                                 <div class="dash-count">
                                     <div class="dash-title">Total Sales</div>
                                     <div class="dash-counts">
-                                        <p>₹</p>
+                                        <p>₹ {{$tot_saleAmount}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                                 <div class="dash-count">
                                     <div class="dash-title">Total Debit</div>
                                     <div class="dash-counts">
-                                        <p>₹</p>
+                                        <p>₹ {{$tot_expense}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                                 <div class="dash-count">
                                     <div class="dash-title">Total Credit</div>
                                     <div class="dash-counts">
-                                        <p>₹</p>
+                                        <p>₹ {{$tot_income}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +131,6 @@
                             <table class="table table-stripped table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Created On</th>
                                         <th>Currency</th>
                                         <th>Count</th>
                                         <th>Price Per Currency in INR</th>
@@ -139,17 +138,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @foreach ($purchase_index_data as $keydata => $purchase_index_datas)
                                     <tr>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                <a href="profile.html">Jennifer Floyd</a>
-                                            </h2>
-                                        </td>
-                                        <td>$519</td>
-                                        <td>18 Sep 2020</td>
-                                        <td>18 Sep 2020</td>
-                                        <td><span class="badge bg-success-light">Paid</span></td>
+                                        <td>{{ $purchase_index_datas->currency->name }}</td>
+                                        <td>{{ $purchase_index_datas->purchases_count }}</td>
+                                        <td>{{ $purchase_index_datas->purchases_count_per_price }}</td>
+                                        <td>{{ $purchase_index_datas->total }}</td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -177,7 +173,6 @@
                             <table class="table table-stripped table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Created On</th>
                                         <th>Currency</th>
                                         <th>Count</th>
                                         <th>Price Per Currency in INR</th>
@@ -185,17 +180,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @foreach ($sale_index_data as $keydata => $sales_index_datas)
                                     <tr>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                <a href="profile.html">Jennifer Floyd</a>
-                                            </h2>
-                                        </td>
-                                        <td>$519</td>
-                                        <td>18 Sep 2020</td>
-                                        <td>18 Sep 2020</td>
-                                        <td><span class="badge bg-success-light">Paid</span></td>
+                                        <td>{{ $sales_index_datas->currency->name }}</td>
+                                        <td>{{ $sales_index_datas->sales_count }}</td>
+                                        <td>{{ $sales_index_datas->sales_count_per_price }}</td>
+                                        <td>{{ $sales_index_datas->total }}</td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -223,21 +215,17 @@
                             <table class="table table-stripped table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                       <th>Created On</th>
                                        <th>Amount</th>
                                        <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @foreach ($expense_index_data as $keydata => $debits)
                                     <tr>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                <a href="profile.html">Jennifer Floyd</a>
-                                            </h2>
-                                        </td>
-                                        <td>$519</td>
-                                        <td>18 Sep 2020</td>
+                                        <td>{{$debits->amount}}</td>
+                                        <td>{{$debits->description}}</td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -265,21 +253,17 @@
                             <table class="table table-stripped table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Created On</th>
                                         <th>Amount</th>
                                         <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @foreach ($income_index_data as $keydata => $income_index_datas)
                                     <tr>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                <a href="profile.html">Jennifer Floyd</a>
-                                            </h2>
-                                        </td>
-                                        <td>$519</td>
-                                        <td>18 Sep 2020</td>
+                                        <td>{{$income_index_datas->amount}}</td>
+                                        <td>{{$income_index_datas->description}}</td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

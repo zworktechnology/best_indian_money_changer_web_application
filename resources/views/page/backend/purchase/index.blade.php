@@ -9,9 +9,9 @@
                     <h6>Purchase</h6>
                     <div class="list-btn">
                         <div style="display: flex;">
-                            <form autocomplete="off" method="POST" action="{{ route('purchase.index') }}">
-                                @method('PUT')
-                                @csrf
+                            <form autocomplete="off" method="POST" action="{{ route('purchase.datefilter') }}">
+                            @method('PUT')
+                            @csrf
                                 <div style="display: flex">
                                     <div style="margin-right: 10px;"><input type="date" name="from_date"
                                             class="form-control from_date" value="{{ $today_date }}"></div>

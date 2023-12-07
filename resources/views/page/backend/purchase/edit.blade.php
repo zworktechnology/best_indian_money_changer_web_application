@@ -33,15 +33,15 @@
                         </div>
                         <div class="form-group">
                             <label>Count<span class="text-danger"> *</span></label>
-                            <input type="number" name="purchases_count" id="purchases_count" class="form-control" placeholder="2" value="{{ $purchase_index_datas->purchases_count }}">
+                            <input type="number" name="purchases_count" id="purchases_count" class="form-control purchases_count" placeholder="2" value="{{ $purchase_index_datas->purchases_count }}">
                         </div>
                         <div class="form-group">
                             <label>Price Per Currency in INR<span class="text-danger"> *</span></label>
-                            <input type="number" name="purchases_count_per_price" id="purchases_count_per_price" class="form-control" placeholder="60" value="{{ $purchase_index_datas->purchases_count_per_price }}">
+                            <input type="number" name="purchases_count_per_price" id="purchases_count_per_price" class="form-control purchases_count_per_price" placeholder="60" value="{{ $purchase_index_datas->purchases_count_per_price }}">
                         </div>
                         <div class="form-group">
                             <label>Total<span class="text-danger"> *</span></label>
-                            <input type="number" name="total" id="total" class="form-control" placeholder="120" value="{{ $purchase_index_datas->total }}">
+                            <input type="number" name="total" id="total" class="form-control total_purchasevalue" placeholder="120" value="{{ $purchase_index_datas->total }}">
                         </div>
                         <div class="form-group">
                             <label>Description</label>

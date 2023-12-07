@@ -28,6 +28,8 @@ Auth::routes();
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // DASHBOARD
     Route::middleware(['auth:sanctum', 'verified'])->get('/home', [HomeController::class, 'index'])->name('home');
+    // DASHBOARD FILTER
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/home/datefilter', [HomeController::class, 'datefilter'])->name('home.datefilter');
 });
 // CURRENCY CONTROLLER
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -50,6 +52,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/purchase/edit/{unique_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     // DELETE
     Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/purchase/delete/{unique_id}', [PurchaseController::class, 'delete'])->name('purchase.delete');
+    // DATAE FILTER
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/purchase/datefilter', [PurchaseController::class, 'datefilter'])->name('purchase.datefilter');
 });
 // SALE CONTROLLER
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -61,6 +65,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/sale/edit/{unique_id}', [SaleController::class, 'edit'])->name('sale.edit');
     // DELETE
     Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/sale/delete/{unique_id}', [SaleController::class, 'delete'])->name('sale.delete');
+    // DATAE FILTER
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/sale/datefilter', [SaleController::class, 'datefilter'])->name('sale.datefilter');
 });
 // EXPENSE CONTROLLER
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

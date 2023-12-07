@@ -9,7 +9,7 @@
                     <h6>Sale</h6>
                     <div class="list-btn">
                         <div style="display: flex;">
-                            <form autocomplete="off" method="POST" action="{{ route('sale.index') }}">
+                            <form autocomplete="off" method="POST" action="{{ route('sale.datefilter') }}">
                                 @method('PUT')
                                 @csrf
                                 <div style="display: flex">
