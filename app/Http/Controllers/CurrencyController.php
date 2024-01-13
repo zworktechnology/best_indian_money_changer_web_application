@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Currency;
+use App\Models\CurrencyOptimal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -25,8 +26,6 @@ class CurrencyController extends Controller
         $data->unique_id = $unique_id_string;
         $data->code = $request->get('code');
         $data->name = $request->get('name');
-        $data->country = $request->get('country');
-        $data->description = $request->get('description');
 
         $data->save();
 
@@ -38,8 +37,6 @@ class CurrencyController extends Controller
         $currency_edit_data = Currency::where('unique_id', '=', $unique_id)->first();
 
         $currency_edit_data->name = $request->get('name');
-        $currency_edit_data->country = $request->get('country');
-        $currency_edit_data->description = $request->get('description');
 
         $currency_edit_data->update();
 
@@ -55,5 +52,13 @@ class CurrencyController extends Controller
         $currency_soft_delete_data->update();
 
         return redirect()->route('currency.index')->with('warning', 'Deleted !');
+    }
+
+
+    public function getcurrencies()
+    {
+        $GetProduct = Currency::where('soft_delete', '!=', 1)->get();
+        $userData['data'] = $GetProduct;
+        echo json_encode($userData);
     }
 }

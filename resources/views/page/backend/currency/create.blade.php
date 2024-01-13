@@ -6,23 +6,13 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group">
-                            <label>Code <span style="color: gray">(Can not be an editable)</span><span
+                            <label>Name<span class="text-danger">*</span></label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="India">
+                        </div>
+                        <div class="form-group">
+                            <label>Code <span style="color: gray"></span><span
                                     class="text-danger">*</span></label>
-                            <input type="text" name="code" id="code" class="form-control" placeholder="91">
-                        </div>
-                        <div class="form-group">
-                            <label>Currency Code<span class="text-danger">*</span></label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="INR">
-                        </div>
-                        <div class="form-group">
-                            <label>Country Name<span class="text-danger">*</span></label>
-                            <input type="text" name="country" id="country" class="form-control"
-                                placeholder="India">
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input type="text" name="description" id="description" class="form-control"
-                                placeholder="Optional">
+                            <input type="text" name="code" id="code" class="form-control" placeholder="INR">
                         </div>
                     </div>
                 </div>

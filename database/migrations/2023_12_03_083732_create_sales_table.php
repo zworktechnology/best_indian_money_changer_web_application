@@ -22,12 +22,20 @@ return new class extends Migration
             $table->string('unique_id')->unique();
             $table->string('date');
             $table->string('time');
-            $table->unsignedBigInteger('currency_id');
+            $table->string('billno');
+            $table->unsignedBigInteger('currency_id')->nullable();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
-            $table->string('sales_count');
-            $table->string('sales_count_per_price');
-            $table->string('total');
-            $table->string('description')->nullable();
+
+            
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+
+            $table->string('grand_total')->nullable();
+            $table->string('oldbalanceamount')->nullable();
+            $table->string('overallamount')->nullable();
+            $table->string('paid_amount')->nullable();
+            $table->string('balance_amount');
+            $table->string('note')->nullable();
             $table->boolean('soft_delete')->default(0);
 
             // CreatedAt & UpdatedAt columns

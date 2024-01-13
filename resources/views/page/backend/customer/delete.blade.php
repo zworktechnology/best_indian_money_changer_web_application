@@ -2,13 +2,13 @@
       <div class="modal-content modal-filled">
          <div class="modal-body">
             <div class="form-header">
-               <h6 class="text-black">Delete Sale Detail</h6>
+               <h6 class="text-black">Delete Customer</h6>
                <p class="text-black">Are you sure want to delete?</p>
             </div>
             <div class="modal-btn delete-action">
                <div class="row">
 
-                  <form autocomplete="off" method="POST" action="{{ route('sale.delete', [$saledatas['unique_id']]) }}">
+                  <form autocomplete="off" method="POST" action="{{ route('customer.delete', [ $customers_arr['id']]) }}">
                      @method('PUT')
                      @csrf
 

@@ -21,11 +21,8 @@
                            <thead class="thead-light">
                               <tr>
                                  <th style="width:20%">S.No</th>
-                                 <th style="width:20%">Code</th>
                                  <th style="width:35%">Name</th>
-                                 <th style="width:35%">Stock</th>
-                                 <th style="width:35%">Country</th>
-                                 <th style="width:35%">Description</th>
+                                 <th style="width:20%">Code</th>
                                  <th style="width:25%">Action</th>
                               </tr>
                            </thead>
@@ -33,15 +30,12 @@
                            @foreach ($currency_index_data as $keydata => $currency_index_datas)
                               <tr>
                                  <td>{{ ++$keydata }}</td>
-                                 <td>{{ $currency_index_datas->code }}</td>
                                  <td>{{ $currency_index_datas->name }}</td>
-                                 <td>10</td>
-                                 <td>{{ $currency_index_datas->country }}</td>
-                                 <td>{{ $currency_index_datas->description }}</td>
+                                 <td>{{ $currency_index_datas->code }}</td>
                                  <td>
                                     <ul class="list-unstyled hstack gap-1 mb-0">
                                        <li>
-                                          <a class="badge bg-warning" href="#edit{{ $currency_index_datas->unique_id }}" data-bs-toggle="modal"
+                                          <a class="badge bg-success" href="#edit{{ $currency_index_datas->unique_id }}" data-bs-toggle="modal"
                                           data-bs-target=".currencyedit-modal-xl{{ $currency_index_datas->unique_id }}" style="color: white;">Edit</a>
                                        </li>
                                        <li>

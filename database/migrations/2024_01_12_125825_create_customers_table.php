@@ -13,22 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('currencies', function (Blueprint $table) {
-
-            // Auto-generate ID column
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
 
             // Request columns
             $table->string('unique_id')->unique();
-            $table->string('code')->unique();
             $table->string('name');
-            $table->string('country')->nullable();
-            $table->string('description')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('note')->nullable();
+            $table->string('current_balance')->nullable();
             $table->boolean('soft_delete')->default(0);
 
-            // CreatedAt & UpdatedAt columns
             $table->timestamps();
-
         });
     }
 
@@ -39,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('currencies');
+        Schema::dropIfExists('customers');
     }
 };

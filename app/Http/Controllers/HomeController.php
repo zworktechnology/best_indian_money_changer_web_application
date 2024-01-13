@@ -38,7 +38,7 @@ class HomeController extends Controller
                 $tot_purchaseAmount = '0';
             }
 
-            $total_sale_amt_billing = Sale::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('total');
+            $total_sale_amt_billing = Sale::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('grand_total');
             if($total_sale_amt_billing != ""){
                 $tot_saleAmount = $total_sale_amt_billing;
             }else {
