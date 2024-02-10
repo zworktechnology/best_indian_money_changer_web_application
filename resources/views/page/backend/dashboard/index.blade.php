@@ -140,7 +140,7 @@
                                 <tbody>
                                 @foreach ($purchase_index_data as $keydata => $purchase_index_datas)
                                     <tr>
-                                        <td>{{ $purchase_index_datas->currency->name }}</td>
+                                        {{-- <td>{{ $purchase_index_datas->currency->name }}</td> --}}
                                         <td>{{ $purchase_index_datas->purchases_count }}</td>
                                         <td>{{ $purchase_index_datas->purchases_count_per_price }}</td>
                                         <td>{{ $purchase_index_datas->total }}</td>
@@ -182,7 +182,7 @@
                                 <tbody>
                                 @foreach ($sale_index_data as $keydata => $sales_index_datas)
                                     <tr>
-                                        <td>{{ $sales_index_datas->currency->name }}</td>
+                                        {{-- <td>{{ $sales_index_datas->currency->name }}</td> --}}
                                         <td>{{ $sales_index_datas->sales_count }}</td>
                                         <td>{{ $sales_index_datas->sales_count_per_price }}</td>
                                         <td>{{ $sales_index_datas->total }}</td>
