@@ -48,8 +48,8 @@
                                  <td>
                                     <ul class="list-unstyled hstack gap-1 mb-0">
                                        <li>
-                                          <a class="badge bg-success" href="#edit{{ $currency_optimals['id'] }}" data-bs-toggle="modal"
-                                          data-bs-target=".currencyoptimaledit-modal-xl{{ $currency_optimals['id'] }}" style="color: white;">Edit</a>
+                                          <a class="badge" href="#edit{{ $currency_optimals['id'] }}" data-bs-toggle="modal"
+                                          data-bs-target=".currencyoptimaledit-modal-xl{{ $currency_optimals['id'] }}" style="color: white;background: #a9ac11;">Edit</a>
                                        </li>
                                        <li>
                                           <a href="#delete{{ $currency_optimals['id'] }}" data-bs-toggle="modal"

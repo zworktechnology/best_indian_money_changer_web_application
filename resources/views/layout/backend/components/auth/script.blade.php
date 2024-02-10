@@ -58,6 +58,8 @@ $(document).on("keyup", '.sales_count_per_price', function() {
 
 var i = 1;
 var j = 1;
+var k = 1;
+var l = 1;
 $(document).ready(function() {
             $('.js-example-basic-single').select2();
 
@@ -190,8 +192,120 @@ $(document).ready(function() {
             });
 
 
-          
 
+
+            $('#purchasecurrency_id' + 1).on('change', function() {
+                var currency_id = this.value;
+
+                $.ajax({
+                    url: '/getcurrencyamount/' + currency_id,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response['data']);
+
+                        var output = response['data'].length;
+                            $('#purchasecurrency_optimal_id' + 1).empty();
+                            $('#purchasecurrencyoptimal_amount' + 1).val('');
+
+                            var $select = $('#purchasecurrency_optimal_id' + 1).append(
+                                $('<option>', {
+                                    value: '0',
+                                    text: 'Select'
+                                }));
+                            $('#purchasecurrency_optimal_id' + 1).append($select);
+
+                            for (var i = 0; i < output; i++) {
+                                $('#purchasecurrency_optimal_id' + 1).append($('<option>', {
+                                    value: response['data'][i].id,
+                                    text: response['data'][i].name
+                                }));
+
+
+                                $('#purchasecurrency_optimal_id' + 1).on('change', function() {
+                                    var currency_optimal_id = this.value;
+
+                                    $.ajax({
+                                    url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                    type: 'get',
+                                    dataType: 'json',
+                                    success: function(response) {
+                                        $('#purchasecurrencyoptimal_amount' + 1).val('');
+                                        console.log(response['data']);
+                                        $('#purchasecurrencyoptimal_amount' + 1).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 1).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 1).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+
+                                        }
+                                    });
+                                });
+                            }
+
+                    }
+                });
+            });
+
+
+
+
+
+
+            $('.purchasecustomer_id').on('change', function() {
+                var purchasecustomer_id = $(this).val();
+                if(purchasecustomer_id){
+                        $('.purchaseold_balance').text('');
+                        $('.purchaseoldbalanceamount').val('');
+                        $.ajax({
+                        url: '/getoldbalanceforpurchase/',
+                        type: 'get',
+                        data: {_token: "{{ csrf_token() }}",
+                        purchasecustomer_id: purchasecustomer_id,
+                                },
+                        dataType: 'json',
+                            success: function(response) {
+                                console.log(response);
+                                        $(".purchaseoldbalanceamount").val(response['data']);
+                                        $('.purchaseold_balance').text(response['data']);
+
+                                        var gross_amount = $(".purchasegrandtotal").val();
+                                        var grand_total = Number(response['data']) + Number(gross_amount);
+                                        $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                        $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                        var purchasepaid_amount = $(".purchasepaid_amount").val();
+                                        var pending_amount = Number(grand_total) - Number(purchasepaid_amount);
+                                        $('.purchasebalanceamount').val(pending_amount.toFixed(2));
+                                        $('.purchasebalance_amount').text(pending_amount.toFixed(2));
+                            }
+                        });
+                }
+            });
+
+
+
+
+
+
+          
+           
 
             $(document).on('click', '.addsalefields', function() {
                 ++i;
@@ -878,6 +992,693 @@ $(document).ready(function() {
             });
 
 
+
+
+
+
+            $(document).on('click', '.addpurchasefields', function() {
+                ++k;
+
+                let  rowIndex = $('.purchaseauto_num').length+1;
+                let  rowIndexx = $('.purchaseauto_num').length+1;
+
+                $(".purchaseproduct_fields").append(
+                    '<tr>' +
+                    '<td><input class="purchaseauto_num form-control"  type="text" readonly value="'+rowIndexx+'"/></td>' +
+                    '<td class=""><input type="hidden" id="purchase_products_id" name="purchase_products_id[]" />' +
+                    '<select class="form-control  currency_id select js-example-basic-single"  name="currency_id[]" id="purchasecurrency_id' + k + '"required>' +
+                    '<option value="" selected hidden class="text-muted">Select Currency</option></select>' +
+                    '</td>' +
+                    '<td><select class="form-control  purchasecurrency_optimal_id select js-example-basic-single" name="purchasecurrency_optimal_id[]" id="purchasecurrency_optimal_id' + k + '" required>' +
+                    '<option value="" selected hidden class="text-muted">Select CurrencyOptimal</option></select>' +
+                    '<input type="hidden" class="form-control purchasecurrencyoptimal_amount" id="purchasecurrencyoptimal_amount' + k + '" name="purchasecurrencyoptimal_amount[]"  value="" required /></td>' +
+                    '<td><input type="text" class="form-control purchase_count" id="purchase_count' + k + '" name="purchase_count[]" placeholder="Count" /></td>' +
+                    '<td><input type="text" class="form-control purchase_total" readonly id="purchase_total' + k + '" name="purchase_total[]" placeholder="Total" /></td>' +
+                    '<td><button class="btn btn-primary form-plus-btn addpurchasefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>' +
+                    '<button class="btn btn-danger form-plus-btn remove-purchasetr" type="button" id="" value="Add"><i class="fe fe-minus-circle"></i></button></td>' +
+                    '</tr>'
+                );
+                $(".purchaseproduct_fields").find('.js-example-basic-single').select2();
+
+
+                $.ajax({
+                    url: '/getcurrencies/',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        //console.log(response['data']);
+                        var len = response['data'].length;
+
+                        var selectedValues = new Array();
+
+                        if (len > 0) {
+                            for (var i = 0; i < len; i++) {
+
+                                    var id = response['data'][i].id;
+                                    var name = response['data'][i].name + '-' + response['data'][i].code;
+                                    var option = "<option value='" + id + "'>" + name +
+                                        "</option>";
+                                    selectedValues.push(option);
+                            }
+                        }
+                        ++l;
+                        $('#purchasecurrency_id' + l).append(selectedValues);
+                        //add_count.push(Object.keys(selectedValues).length);
+                    }
+                });
+
+                if(k == '2'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 2).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 2).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 2).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 2).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 2).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 2).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 2).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 2).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 2).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+                    
+
+                if(k == '3'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 3).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 3).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 3).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 3).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 3).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 3).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 3).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 3).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 3).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+
+                if(k == '4'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 4).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 4).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 4).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 4).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 4).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 4).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 4).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 4).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 4).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+
+                if(k == '5'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 5).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 5).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 5).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 5).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 5).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 5).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 5).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 5).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 5).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+
+                if(k == '6'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 6).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 6).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 6).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 6).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 6).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 6).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 6).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 6).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 6).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+
+                if(k == '7'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 7).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 7).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 7).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 7).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 7).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 7).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 7).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 7).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 7).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+
+                if(k == '8'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 8).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 8).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 8).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 8).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 8).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 8).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 8).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 8).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 8).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+
+                if(k == '9'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 9).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 9).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 9).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 9).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 9).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 9).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 9).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 9).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 9).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+                    
+                if(k == '10'){
+                    $('#purchasecurrency_id' + k).on('change', function() {
+                        var currency_id = this.value;
+
+                        $.ajax({
+                            url: '/getcurrencyamount/' + currency_id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response['data']);
+
+                                var output = response['data'].length;
+                                    $('#purchasecurrency_optimal_id' + 10).empty();
+
+
+                                    var $select = $('#purchasecurrency_optimal_id' + 10).append(
+                                        $('<option>', {
+                                            value: '0',
+                                            text: 'Select'
+                                        }));
+                                    $('#purchasecurrency_optimal_id' + 10).append($select);
+
+                                    for (var i = 0; i < output; i++) {
+                                        $('#purchasecurrency_optimal_id' + 10).append($('<option>', {
+                                            value: response['data'][i].id,
+                                            text: response['data'][i].name
+                                        }));
+
+                                        $('#purchasecurrency_optimal_id' + 10).on('change', function() {
+                                            var currency_optimal_id = this.value;
+
+                                            $.ajax({
+                                            url: '/getcurrencyoptimalamount/' + currency_optimal_id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                $('#purchasecurrencyoptimal_amount' + 10).val('');
+                                                console.log(response['data']);
+                                                $('#purchasecurrencyoptimal_amount' + 10).val(response['data']);
+                                                var purchase_count = $('#purchase_count' + 10).val();
+                                                var total = purchase_count * response['data'];
+                                                $('#purchase_total' + 10).val(total);
+
+                                                var sum = 0;
+                                                $(".purchase_total").each(function(){
+                                                    sum += +$(this).val();
+                                                });
+                                                $(".purchasegrandtotal").val(sum.toFixed(2));
+                                                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                                                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                                                $('.purchasebalanceamount').val(balance.toFixed(2));
+                                                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+                                                }
+                                            });
+                                        });
+                                    }
+
+                            }
+                        });
+                    });
+                }
+
+            });
+
+
            
 
 });
@@ -906,6 +1707,7 @@ $(document).on('click', '.remove-tr', function() {
                 $('.balance_amount').val(balance.toFixed(2));
                 $('.salebalance_amount').text('₹ ' + balance.toFixed(2));
 });
+
 
 
 $(document).on("keyup", "input[name*=sale_count]", function() {
@@ -938,6 +1740,9 @@ $(document).on("keyup", "input[name*=sale_count]", function() {
 });
 
 
+
+
+
 $(document).on("keyup", 'input.salepaid_amount', function() {
         var salepaid_amount = $(this).val();
         var grand_total = $(".overallamount").val();
@@ -947,7 +1752,9 @@ $(document).on("keyup", 'input.salepaid_amount', function() {
         $('.salebalance_amount').text('₹ ' + salebalance.toFixed(2));
     });
 
-        
+
+
+
 
 
 function regenerate_auto_num(){
@@ -957,4 +1764,86 @@ function regenerate_auto_num(){
                 count++;
               })
             }
+
+
+
+
+$(document).on('click', '.remove-purchasetr', function() {
+    $(this).parents('tr').remove();
+    regenerate_auto_purchasenum();
+
+                var sum = 0;
+                $(".purchase_total").each(function(){
+                    sum += +$(this).val();
+                });
+                $(".purchasegrandtotal").val(sum.toFixed(2));
+                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                $('.purchasebalanceamount').val(sum.toFixed(2));
+                $('.purchasebalance_amount').text('₹ ' + sum.toFixed(2));
+
+                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                $('.purchasebalanceamount').val(balance.toFixed(2));
+                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+});
+
+
+$(document).on("keyup", "input[name*=purchase_count]", function() {
+    var purchase_count = $(this).val();
+    var purchasecurrencyoptimal_amount = $(this).parents('tr').find('.purchasecurrencyoptimal_amount').val();
+    var total = purchase_count * purchasecurrencyoptimal_amount;
+    $(this).parents('tr').find('.purchase_total').val(total);
+    //alert(total);
+
+
+    var sum = 0;
+                $(".purchase_total").each(function(){
+                    sum += +$(this).val();
+                });
+                $(".purchasegrandtotal").val(sum.toFixed(2));
+                $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
+
+                $('.purchasebalanceamount').val(sum.toFixed(2));
+                $('.purchasebalance_amount').text('₹ ' + sum.toFixed(2));
+
+                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
+                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                var purchasepaid_amount = $('.purchasepaid_amount').val();
+                var balance = Number(grand_total) - Number(purchasepaid_amount);
+                $('.purchasebalanceamount').val(balance.toFixed(2));
+                $('.purchasebalance_amount').text('₹ ' + balance.toFixed(2));
+});
+
+
+    $(document).on("keyup", 'input.purchasepaid_amount', function() {
+        var purchasepaid_amount = $(this).val();
+        var grand_total = $(".purchaseoverallamount").val();
+        //alert(bill_paid_amount);
+        var salebalance = Number(grand_total) - Number(purchasepaid_amount);
+        $('.purchasebalanceamount').val(salebalance.toFixed(2));
+        $('.purchasebalance_amount').text('₹ ' + salebalance.toFixed(2));
+    });
+
+        
+
+            function regenerate_auto_purchasenum(){
+                let count  = 1;
+                $(".purchaseauto_num").each(function(i,v){
+                $(this).val(count);
+                count++;
+              })
+            }
+
+
+
+            
 </script>

@@ -8,7 +8,7 @@
             <div class="modal-btn delete-action">
                <div class="row">
 
-                  <form autocomplete="off" method="POST" action="{{ route('purchase.delete', [$purchase_index_datas->unique_id]) }}">
+                  <form autocomplete="off" method="POST" action="{{ route('purchase.delete', [$Purchasedatas['unique_id']]) }}">
                      @method('PUT')
                      @csrf
 

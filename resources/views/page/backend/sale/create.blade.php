@@ -23,7 +23,7 @@
                                             <div class="row align-item-center">
                                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label style="text-transform:uppercase;"> Date <span class="text-danger">*</span></label>
+                                                        <label > Date <span class="text-danger">*</span></label>
                                                         <input type="date" class="datetimepicker form-control" placeholder="Select Date"
                                                             value="{{ $today }}" name="date" id="date"
                                                             required>
@@ -31,7 +31,7 @@
                                                 </div>
                                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label style="text-transform:uppercase;">Time <span class="text-danger">*</span></label>
+                                                        <label>Time <span class="text-danger">*</span></label>
                                                         <input type="time" class="datetimepicker form-control" placeholder="Select Date"
                                                             value="{{ $timenow }}" name="time" id="time"
                                                             required>
@@ -39,7 +39,7 @@
                                                 </div>
                                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label style="text-transform:uppercase;">Customer <span class="text-danger">*</span></label>
+                                                        <label >Customer <span class="text-danger">*</span></label>
                                                         <select
                                                             class="form-control select salecustomer_id js-example-basic-single"
                                                             name="customer_id" id="customer_id" required>
@@ -59,12 +59,12 @@
                                             <table class="table table-center table-hover datatable">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th style="width:8%;text-transform:uppercase;">S.No</th>
-                                                        <th style="width:23%;text-transform:uppercase;">Currency</th>
-                                                        <th style="width:14%;text-transform:uppercase;">Currency Optimal</th>
-                                                        <th style="width:14%;text-transform:uppercase;">Count</th>
-                                                        <th style="width:20%;text-transform:uppercase;">Total</th>
-                                                        <th style="width:5%;text-transform:uppercase;">Action</th>
+                                                        <th style="width:8%;">S.No</th>
+                                                        <th style="width:23%;">Currency</th>
+                                                        <th style="width:14%;">Currency Optimal</th>
+                                                        <th style="width:14%;">Count</th>
+                                                        <th style="width:20%;">Total</th>
+                                                        <th style="width:5%;">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="saleproduct_fields">
@@ -118,7 +118,7 @@
                                                 <div class="col-xl-6 col-lg-12">
                                                     <div class="form-group-bank">
                                                         <div class="form-group notes-form-group-info">
-                                                            <label style="text-transform:uppercase;">Notes <span class="text-danger">*</span></label>
+                                                            <label>Notes <span class="text-danger">*</span></label>
                                                             <textarea class="form-control" placeholder="Enter Notes" name="note" id="note" required></textarea>
                                                         </div>
                                                     </div>

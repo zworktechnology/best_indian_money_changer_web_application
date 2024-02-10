@@ -10,7 +10,7 @@
          </div>
 
          <form autocomplete="off" method="POST"
-                action="{{ route('income.edit', ['unique_id' => $income_index_datas->unique_id]) }}" enctype="multipart/form-data">
+                action="{{ route('income.edit', ['unique_id' => $Income_datas['unique_id']]) }}" enctype="multipart/form-data">
                 @csrf
 
             <div class="modal-body">
@@ -18,12 +18,21 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group">
                             <label>Amount<span class="text-danger">*</span></label>
-                            <input type="text" name="amount" id="amount" class="form-control" placeholder="150" value="{{ $income_index_datas->amount }}">
+                            <input type="text" name="amount" id="amount" class="form-control" placeholder="150" value="{{ $Income_datas['amount'] }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Customer<span class="text-danger">*</span></label>
+                            <select class="form-control select js-example-basic-single" name="customer_id" id="customer_id" required>
+                                   <option value="" disabled selected hiddden>Select Customer </option>
+                                        @foreach ($customers as $customers_arr)
+                                            <option value="{{ $customers_arr->id }}"@if ($customers_arr->id === $Income_datas['customer_id']) selected='selected' @endif>{{ $customers_arr->name }}</option>
+                                        @endforeach
+                                    </select>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
                             <input type="text" name="description" id="description" class="form-control"
-                                placeholder="Optional" value="{{ $income_index_datas->description }}">
+                                placeholder="Optional" value="{{ $Income_datas['description'] }}">
                         </div>
                     </div>
                 </div>

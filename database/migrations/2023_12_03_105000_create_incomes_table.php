@@ -21,6 +21,10 @@ return new class extends Migration
             // Request columns
             $table->string('unique_id')->unique();
             $table->string('date');
+
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            
             $table->string('time');
             $table->string('amount');
             $table->string('description')->nullable();

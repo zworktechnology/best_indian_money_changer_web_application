@@ -7,11 +7,20 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group">
                             <label>Date<span class="text-danger"> *</span></label>
-                            <input type="date" name="date" id="date" class="form-control" value="{{ $today_date }}">
+                            <input type="date" name="date" id="date" class="form-control" value="{{ $today }}">
                         </div>
                         <div class="form-group">
                             <label>Time<span class="text-danger"> *</span></label>
-                            <input type="time" name="time" id="time" class="form-control" value="{{ $today_time }}">
+                            <input type="time" name="time" id="time" class="form-control" value="{{ $timenow }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Customer<span class="text-danger">*</span></label>
+                            <select class="form-control select  js-example-basic-single" name="customer_id" id="customer_id" required>
+                                   <option value="" disabled selected hiddden>Select Customer </option>
+                                        @foreach ($customers as $customers_arr)
+                                            <option value="{{ $customers_arr->id }}">{{ $customers_arr->name }}</option>
+                                        @endforeach
+                                    </select>
                         </div>
                         <div class="form-group">
                             <label>Amount<span class="text-danger">*</span></label>

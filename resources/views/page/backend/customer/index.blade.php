@@ -50,8 +50,8 @@
                                  <td>
                                     <ul class="list-unstyled hstack gap-1 mb-0">
                                        <li>
-                                          <a class="badge bg-success" href="#edit{{ $customers_arr['id'] }}" data-bs-toggle="modal"
-                                          data-bs-target=".customeredit-modal-xl{{ $customers_arr['id'] }}" style="color: white;">Edit</a>
+                                          <a class="badge" href="#edit{{ $customers_arr['id'] }}" data-bs-toggle="modal"
+                                          data-bs-target=".customeredit-modal-xl{{ $customers_arr['id'] }}" style="color: white;background: #a9ac11;">Edit</a>
                                        </li>
                                        <li>
                                           <a href="#delete{{ $customers_arr['id'] }}" data-bs-toggle="modal"

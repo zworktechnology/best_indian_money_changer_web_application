@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Income;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -11,12 +12,58 @@ class IncomeController extends Controller
 {
     public function index()
     {
-        $today_date = Carbon::now()->format('Y-m-d');
-        $today_time = Carbon::now()->format('H:i');
+        $today = Carbon::now()->format('Y-m-d');
+        $timenow = Carbon::now()->format('H:i');
 
-        $income_index_data = Income::where('soft_delete', '!=', 1)->latest('created_at')->get();
+        $data = Income::where('soft_delete', '!=', 1)->where('date', '=', $today)->latest('created_at')->get();
+        $Income_data = [];
+        foreach ($data as $key => $datas) {
 
-        return view('page.backend.income.index', compact('income_index_data', 'today_date', 'today_time'));
+            $customer = Customer::findOrFail($datas->customer_id);
+
+            $Income_data[] = array(
+                'unique_id' => $datas->unique_id,
+                'date' => $datas->date,
+                'time' => $datas->time,
+                'amount' => $datas->amount,
+                'description' => $datas->description,
+                'id' => $datas->id,
+                'customer' => $customer->name,
+                'customer_id' => $datas->customer_id,
+            );
+        }
+
+        $customers = Customer::where('soft_delete', '!=', 1)->latest('created_at')->get();
+
+        return view('page.backend.income.index', compact('Income_data', 'today', 'timenow', 'customers'));
+    }
+
+    public function datefilter(Request $request) {
+
+        $today = $request->get('from_date');
+        $timenow = Carbon::now()->format('H:i');
+
+        $data = Income::where('soft_delete', '!=', 1)->where('date', '=', $today)->latest('created_at')->get();
+        $Income_data = [];
+        foreach ($data as $key => $datas) {
+
+            $customer = Customer::findOrFail($datas->customer_id);
+
+            $Income_data[] = array(
+                'unique_id' => $datas->unique_id,
+                'date' => $datas->date,
+                'time' => $datas->time,
+                'amount' => $datas->amount,
+                'description' => $datas->description,
+                'id' => $datas->id,
+                'customer' => $customer->name,
+                'customer_id' => $datas->customer_id,
+            );
+        }
+
+        $customers = Customer::where('soft_delete', '!=', 1)->latest('created_at')->get();
+
+        return view('page.backend.income.index', compact('Income_data', 'today', 'timenow', 'customers'));
     }
 
     public function store(Request $request)
@@ -29,6 +76,7 @@ class IncomeController extends Controller
         $data->date = $request->get('date');
         $data->time = $request->get('time');
         $data->amount = $request->get('amount');
+        $data->customer_id = $request->get('customer_id');
         $data->description = $request->get('description');
 
         $data->save();
@@ -42,6 +90,7 @@ class IncomeController extends Controller
 
         $income_edit_data->amount = $request->get('amount');
         $income_edit_data->description = $request->get('description');
+        $income_edit_data->customer_id = $request->get('customer_id');
 
         $income_edit_data->update();
 

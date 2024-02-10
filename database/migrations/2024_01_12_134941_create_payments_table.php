@@ -16,11 +16,17 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('total_amount')->nullable();
             $table->string('total_paid')->nullable();
             $table->string('total_balance')->nullable();
+
+            $table->unsignedBigInteger('purchase_customerid')->nullable();
+            $table->foreign('purchase_customerid')->references('id')->on('customers')->onDelete('cascade');
+            $table->string('purchase_amount')->nullable();
+            $table->string('purchase_paid')->nullable();
+            $table->string('purchase_balance')->nullable();
 
 
             $table->timestamps();

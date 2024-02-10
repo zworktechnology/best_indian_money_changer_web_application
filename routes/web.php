@@ -121,6 +121,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/expense/edit/{unique_id}', [ExpenseController::class, 'edit'])->name('expense.edit');
     // DELETE
     Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/expense/delete/{unique_id}', [ExpenseController::class, 'delete'])->name('expense.delete');
+    // DATAE FILTER
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/expense/datefilter', [ExpenseController::class, 'datefilter'])->name('expense.datefilter');
 });
 // INCOME CONTROLLER
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -132,6 +134,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/income/edit/{unique_id}', [IncomeController::class, 'edit'])->name('income.edit');
     // DELETE
     Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/income/delete/{unique_id}', [IncomeController::class, 'delete'])->name('income.delete');
+    // DATAE FILTER
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/income/datefilter', [IncomeController::class, 'datefilter'])->name('income.datefilter');
 });
 
 
@@ -139,3 +143,4 @@ Route::get('getcurrencies/', [CurrencyController::class, 'getcurrencies']);
 Route::get('getcurrencyamount/{currency_id}', [CurrencyOptimalController::class, 'getcurrencyamount']);
 Route::get('getcurrencyoptimalamount/{currency_optimal_id}', [CurrencyOptimalController::class, 'getcurrencyoptimalamount']);
 Route::get('/getoldbalance', [CustomerController::class, 'getoldbalance']);
+Route::get('/getoldbalanceforpurchase', [CustomerController::class, 'getoldbalanceforpurchase']);

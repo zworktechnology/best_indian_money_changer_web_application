@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Expense extends Model
+class PurchaseProduct extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'unique_id',
         'date',
-        'customer_id',
         'time',
-        'amount',
-        'description',
+        'purchase_id',
+        'currency_id',
+        'currency_optimal_id',
+        'currencyoptimal_amount',
+        'count',
+        'total',
         'soft_delete'
     ];
 }

@@ -50,8 +50,8 @@
                                             <tr>
                                                 <td>{{ ++$keydata }}</td>
                                                 <td>{{ date('Y-m-d', strtotime($saledatas['date'])) }} - {{ date('h:i A', strtotime($saledatas['time'])) }}</td>
-                                                <td style="text-transform: uppercase;">{{ $saledatas['customer'] }}</td>
-                                                <td style="text-transform: uppercase;">
+                                                <td>{{ $saledatas['customer'] }}</td>
+                                                <td >
                                                 @foreach ($saledatas['products'] as $index => $terms_array)
                                                     @if ($terms_array['sales_id'] == $saledatas['id'])
                                                     {{ $terms_array['currency'] }} {{ $terms_array['code'] }} - {{ $terms_array['currency_optimal'] }} <br/>
@@ -64,7 +64,7 @@
                                                     <ul class="list-unstyled hstack gap-1 mb-0">
                                                     <li>
                                                             <a href="{{ route('sale.edit', ['unique_id' => $saledatas['unique_id']]) }}"
-                                                                class="badge bg-warning" style="color:#28084b;">Edit</a>
+                                                                class="badge" style="color:#28084b;background: #a9ac11;">Edit</a>
                                                     </li>
                                                     <li>
                                                         <a class="badge" href="#saleview{{ $saledatas['unique_id'] }}" data-bs-toggle="modal"

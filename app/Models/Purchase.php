@@ -12,12 +12,16 @@ class Purchase extends Model
     protected $fillable = [
         'unique_id',
         'date',
+        'billno',
         'time',
         'currency_id',
-        'purchases_count',
-        'purchases_count_per_price',
-        'total',
-        'description',
+        'customer_id',
+        'grand_total',
+        'oldbalanceamount',
+        'overallamount',
+        'paid_amount',
+        'balance_amount',
+        'note',
         'soft_delete'
     ];
 

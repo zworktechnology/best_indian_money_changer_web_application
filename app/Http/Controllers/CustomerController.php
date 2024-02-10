@@ -120,4 +120,23 @@ class CustomerController extends Controller
 
         echo json_encode($userData);
     }
+
+
+    public function getoldbalanceforpurchase()
+    {
+
+        $purchasecustomer_id = request()->get('purchasecustomer_id');
+
+        $last_idrow = Payment::where('purchase_customerid', '=', $purchasecustomer_id)->first();
+
+        if($last_idrow != ""){
+            if($last_idrow->purchase_balance != NULL){
+                $userData['data'] = $last_idrow->purchase_balance;
+            }
+        }else {
+            $userData['data'] = 0;
+        }
+
+        echo json_encode($userData);
+    }
 }

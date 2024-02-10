@@ -31,7 +31,7 @@ class HomeController extends Controller
 
         $today = Carbon::now()->format('Y-m-d');
 
-            $total_purchase_amt_billing = Purchase::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('total');
+            $total_purchase_amt_billing = Purchase::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('grand_total');
             if($total_purchase_amt_billing != ""){
                 $tot_purchaseAmount = $total_purchase_amt_billing;
             }else {
@@ -79,14 +79,14 @@ class HomeController extends Controller
         $today = $request->get('from_date');
 
 
-        $total_purchase_amt_billing = Purchase::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('total');
+        $total_purchase_amt_billing = Purchase::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('grand_total');
         if($total_purchase_amt_billing != ""){
             $tot_purchaseAmount = $total_purchase_amt_billing;
         }else {
             $tot_purchaseAmount = '0';
         }
 
-        $total_sale_amt_billing = Sale::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('total');
+        $total_sale_amt_billing = Sale::where('soft_delete', '!=', 1)->where('date', '=', $today)->sum('grand_total');
         if($total_sale_amt_billing != ""){
             $tot_saleAmount = $total_sale_amt_billing;
         }else {

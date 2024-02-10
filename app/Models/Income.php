@@ -13,6 +13,7 @@ class Income extends Model
         'unique_id',
         'date',
         'time',
+        'customer_id',
         'amount',
         'description',
         'soft_delete'

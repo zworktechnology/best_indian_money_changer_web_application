@@ -8,7 +8,7 @@
             <div class="modal-btn delete-action">
                <div class="row">
 
-                  <form autocomplete="off" method="POST" action="{{ route('income.delete', [$income_index_datas->unique_id]) }}">
+                  <form autocomplete="off" method="POST" action="{{ route('income.delete', [$Income_datas['unique_id']]) }}">
                      @method('PUT')
                      @csrf
 
