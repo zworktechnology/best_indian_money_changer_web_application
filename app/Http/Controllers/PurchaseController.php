@@ -35,6 +35,8 @@ class PurchaseController extends Controller
                 $currency_optimal = CurrencyOptimal::findOrFail($PurchaseProduct_Arr->currency_optimal_id);
                 $products[] = array(
                     'currencyoptimal_amount' => $PurchaseProduct_Arr->currencyoptimal_amount,
+                    'doller_rate' => $PurchaseProduct_Arr->doller_rate,
+                    'dollertotal' => $PurchaseProduct_Arr->dollertotal,
                     'count' => $PurchaseProduct_Arr->count,
                     'total' => $PurchaseProduct_Arr->total,
                     'code' => $currency->code,
@@ -88,6 +90,8 @@ class PurchaseController extends Controller
                 $currency_optimal = CurrencyOptimal::findOrFail($PurchaseProduct_Arr->currency_optimal_id);
                 $products[] = array(
                     'currencyoptimal_amount' => $PurchaseProduct_Arr->currencyoptimal_amount,
+                    'doller_rate' => $PurchaseProduct_Arr->doller_rate,
+                    'dollertotal' => $PurchaseProduct_Arr->dollertotal,
                     'count' => $PurchaseProduct_Arr->count,
                     'total' => $PurchaseProduct_Arr->total,
                     'code' => $currency->code,
@@ -175,15 +179,31 @@ class PurchaseController extends Controller
             $PurchaseProduct->currency_id = $currency_id;
             $PurchaseProduct->currency_optimal_id = $request->purchasecurrency_optimal_id[$key];
             $PurchaseProduct->currencyoptimal_amount = $request->purchasecurrencyoptimal_amount[$key];
+            $PurchaseProduct->doller_rate = $request->purchasedoller_rate[$key];
+            $PurchaseProduct->dollertotal = $request->purchasedollertotal[$key];
             $PurchaseProduct->count = $request->purchase_count[$key];
             $PurchaseProduct->total = $request->purchase_total[$key];
             $PurchaseProduct->save();
+
+            $currency_optimal_id = $request->purchasecurrency_optimal_id[$key];
+
+            $OptimalData = CurrencyOptimal::findOrFail($currency_optimal_id);
+            if($OptimalData != ""){
+                $doller_count = $OptimalData->available_stock;
+                $totaldoller_count = $doller_count + $request->purchase_count[$key];
+
+                DB::table('currency_optimals')->where('id', $currency_optimal_id)->update([
+                    'available_stock' => $totaldoller_count
+                ]);
+            }
         }
 
-        $PaymentData = Payment::where('purchase_customerid', '=', $customer_id)->first();
+
+
+        $PaymentData = Payment::where('customer_id', '=', $customer_id)->first();
         if($PaymentData != ""){
-            $total_amount = $PaymentData->purchase_amount;
-            $total_paid = $PaymentData->purchase_paid;
+            $total_amount = $PaymentData->total_amount;
+            $total_paid = $PaymentData->total_paid;
 
             $grand_total = $request->get('purchasegrandtotal');
             $paid_amount = $request->get('purchasepaid_amount');
@@ -192,8 +212,8 @@ class PurchaseController extends Controller
             $new_paid = $total_paid + $paid_amount;
             $new_balance = $new_grossamount - $new_paid;
 
-            DB::table('payments')->where('purchase_customerid', $customer_id)->update([
-                'purchase_amount' => $new_grossamount,  'purchase_paid' => $new_paid, 'purchase_balance' => $new_balance
+            DB::table('payments')->where('customer_id', $customer_id)->update([
+                'total_amount' => $new_grossamount,  'total_paid' => $new_paid, 'total_balance' => $new_balance
             ]);
         }else {
             $gross_amount = $request->get('purchasegrandtotal');
@@ -202,10 +222,10 @@ class PurchaseController extends Controller
 
             $data = new Payment();
 
-            $data->purchase_customerid = $customer_id;
-            $data->purchase_amount = $request->get('purchasegrandtotal');
-            $data->purchase_paid = $request->get('purchasepaid_amount');
-            $data->purchase_balance = $balance_amount;
+            $data->customer_id = $customer_id;
+            $data->total_amount = $request->get('purchasegrandtotal');
+            $data->total_paid = $request->get('purchasepaid_amount');
+            $data->total_balance = $balance_amount;
             $data->save();
         }
 
@@ -234,11 +254,11 @@ class PurchaseController extends Controller
 
         $purchase_customerid = $Purchasedata->customer_id;
 
-        $PaymentData = Payment::where('purchase_customerid', '=', $purchase_customerid)->first();
+        $PaymentData = Payment::where('customer_id', '=', $purchase_customerid)->first();
         if($PaymentData != ""){
 
-            $old_grossamount = $PaymentData->purchase_amount;
-            $old_paid = $PaymentData->purchase_paid;
+            $old_grossamount = $PaymentData->total_amount;
+            $old_paid = $PaymentData->total_paid;
 
             $oldentry_grossamount = $Purchasedata->grand_total;
             $oldentry_paid = $Purchasedata->paid_amount;
@@ -254,8 +274,8 @@ class PurchaseController extends Controller
 
             $new_balance = $newgross - $newpaid;
 
-            DB::table('payments')->where('purchase_customerid', $purchase_customerid)->update([
-                'purchase_amount' => $newgross,  'purchase_paid' => $newpaid, 'purchase_balance' => $new_balance
+            DB::table('payments')->where('customer_id', $purchase_customerid)->update([
+                'total_amount' => $newgross,  'total_paid' => $newpaid, 'total_balance' => $new_balance
             ]);
         }
 
@@ -284,6 +304,22 @@ class PurchaseController extends Controller
         $updated_product_ids = array_filter($updated_products);
         $different_ids = array_merge(array_diff($purchase_products, $updated_product_ids), array_diff($updated_product_ids, $purchase_products));
 
+
+        if (!empty($different_ids)) {
+            foreach ($different_ids as $key => $differents_id) {
+                $getPurchaseOld = PurchaseProduct::where('id', '=', $differents_id)->first();
+
+                $OptimalData = CurrencyOptimal::findOrFail($getPurchaseOld->currency_optimal_id);
+
+                $doller_count = $OptimalData->available_stock;
+                $totaldoller_count = $doller_count - $getPurchaseOld->count;
+
+                DB::table('currency_optimals')->where('id', $getPurchaseOld->currency_optimal_id)->update([
+                    'available_stock' => $totaldoller_count
+                ]);
+            }
+        }
+
         if (!empty($different_ids)) {
             foreach ($different_ids as $key => $different_id) {
                 PurchaseProduct::where('id', $different_id)->delete();
@@ -302,12 +338,38 @@ class PurchaseController extends Controller
                 $currency_id = $request->currency_id[$key];
                 $currency_optimal_id = $request->purchasecurrency_optimal_id[$key];
                 $currencyoptimal_amount = $request->purchasecurrencyoptimal_amount[$key];
+                $purchasedoller_rate = $request->purchasedoller_rate[$key];
+                $purchasedollertotal = $request->purchasedollertotal[$key];
                 $count = $request->purchase_count[$key];
                 $total = $request->purchase_total[$key];
 
-                DB::table('purchase_products')->where('id', $ids)->update([
-                    'purchase_id' => $purchase_id, 'currency_id' => $currency_id, 'currency_optimal_id' => $currency_optimal_id, 'currencyoptimal_amount' => $currencyoptimal_amount, 'count' => $count, 'total' => $total
+                $inserted_products = PurchaseProduct::where('id', '=', $purchase_products_id)->where('currency_optimal_id', '=', $currency_optimal_id)->first();
+                $inserted_stock = $inserted_products->count;
+
+                $OptimalDatas = CurrencyOptimal::findOrFail($currency_optimal_id);
+                $availablestock = $OptimalDatas->available_stock;
+
+                $editedstock = $availablestock - $inserted_stock;
+                DB::table('currency_optimals')->where('id', $currency_optimal_id)->update([
+                    'available_stock' => $editedstock
                 ]);
+
+
+                DB::table('purchase_products')->where('id', $ids)->update([
+                    'purchase_id' => $purchase_id, 'currency_id' => $currency_id, 'currency_optimal_id' => $currency_optimal_id,
+                     'currencyoptimal_amount' => $currencyoptimal_amount, 'doller_rate' => $purchasedoller_rate, 'dollertotal' => $purchasedollertotal, 'count' => $count, 'total' => $total
+                ]);
+
+                $OptimalDatasid = CurrencyOptimal::findOrFail($currency_optimal_id);
+                $availablestocks = $OptimalDatasid->available_stock;
+                $newstock = $availablestocks + $count;
+
+                DB::table('currency_optimals')->where('id', $currency_optimal_id)->update([
+                    'available_stock' => $newstock
+                ]);
+
+
+               
 
             } else if ($purchase_products_id == '') {
 
@@ -318,9 +380,24 @@ class PurchaseController extends Controller
                 $PurchaseProduct->currency_id = $request->currency_id[$key];
                 $PurchaseProduct->currency_optimal_id = $request->purchasecurrency_optimal_id[$key];
                 $PurchaseProduct->currencyoptimal_amount = $request->purchasecurrencyoptimal_amount[$key];
+                $PurchaseProduct->doller_rate = $request->purchasedoller_rate[$key];
+                $PurchaseProduct->dollertotal = $request->purchasedollertotal[$key];
                 $PurchaseProduct->count = $request->purchase_count[$key];
                 $PurchaseProduct->total = $request->purchase_total[$key];
                 $PurchaseProduct->save();
+
+
+                $currency_optimal_id = $request->purchasecurrency_optimal_id[$key];
+
+                $OptimalData = CurrencyOptimal::findOrFail($currency_optimal_id);
+                if($OptimalData != ""){
+                    $doller_count = $OptimalData->available_stock;
+                    $totaldoller_count = $doller_count + $request->purchase_count[$key];
+
+                    DB::table('currency_optimals')->where('id', $currency_optimal_id)->update([
+                        'available_stock' => $totaldoller_count
+                    ]);
+                }
             }
         }
 
@@ -339,12 +416,12 @@ class PurchaseController extends Controller
         $customer_id = $data->customer_id;
 
 
-        $PurchasebranchwiseData = Payment::where('purchase_customerid', '=', $customer_id)->first();
+        $PurchasebranchwiseData = Payment::where('customer_id', '=', $customer_id)->first();
         if($PurchasebranchwiseData != ""){
 
 
-            $old_grossamount = $PurchasebranchwiseData->purchase_amount;
-            $old_paid = $PurchasebranchwiseData->purchase_paid;
+            $old_grossamount = $PurchasebranchwiseData->total_amount;
+            $old_paid = $PurchasebranchwiseData->total_paid;
 
             $oldentry_grossamount = $data->grand_total;
             $oldentry_paid = $data->paid_amount;
@@ -355,8 +432,8 @@ class PurchaseController extends Controller
 
                 $new_balance = $updated_gross - $updated_paid;
 
-            DB::table('payments')->where('purchase_customerid', $customer_id)->update([
-                'purchase_amount' => $updated_gross,  'purchase_paid' => $updated_paid, 'purchase_balance' => $new_balance
+            DB::table('payments')->where('customer_id', $customer_id)->update([
+                'total_amount' => $updated_gross,  'total_paid' => $updated_paid, 'total_balance' => $new_balance
             ]);
 
         }

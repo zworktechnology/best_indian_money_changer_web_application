@@ -16,6 +16,8 @@ class SaleProduct extends Model
         'currency_id',
         'currency_optimal_id',
         'currencyoptimal_amount',
+        'doller_rate',
+        'dollertotal',
         'count',
         'total',
         'soft_delete'

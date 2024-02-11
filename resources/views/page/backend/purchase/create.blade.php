@@ -59,12 +59,14 @@
                                             <table class="table table-center table-hover datatable">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th style="width:8%;">S.No</th>
-                                                        <th style="width:23%;">Currency</th>
-                                                        <th style="width:14%;">Currency Optimal</th>
-                                                        <th style="width:14%;">Count</th>
-                                                        <th style="width:20%;">Total</th>
-                                                        <th style="width:5%;">Action</th>
+                                                        <th style="width:7%;">S.No</th>
+                                                        <th style="width:19%;">Currency</th>
+                                                        <th style="width:13%;">Currency Optimal</th>
+                                                        <th style="width:15%">Rate / Doller</th>
+                                                        <th style="width:15%">Total</th>
+                                                        <th style="width:10%;">Count</th>
+                                                        <th style="width:13%;">Total Amount</th>
+                                                        <th style="width:8%;">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="purchaseproduct_fields">
@@ -97,14 +99,16 @@
                                                                 id="purchasecurrencyoptimal_amount1" name="purchasecurrencyoptimal_amount[]"
                                                                 value="" required />
                                                         </td>
+                                                        <td><input type="text" class="form-control purchasedoller_rate" id="purchasedoller_rate1" name="purchasedoller_rate[]" placeholder="Rate" /></td>
+                                                        <td><input type="text" class="form-control purchasedollertotal" id="purchasedollertotal1" name="purchasedollertotal[]" readonly /></td>
                                                         <td><input type="text" class="form-control purchase_count"
                                                                  id="purchase_count1" name="purchase_count[]"
-                                                                placeholder="Count" /></td>
+                                                                placeholder="Qty" /></td>
                                                         <td><input type="text" class="form-control purchase_total"
                                                                 readonly id="purchase_total1" name="purchase_total[]"
                                                                 placeholder="Total" /></td>
                                                         <td>
-                                                            <button class="btn btn-primary form-plus-btn addpurchasefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
+                                                            <button class="additemplus_button addpurchasefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>

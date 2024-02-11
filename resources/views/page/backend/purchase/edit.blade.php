@@ -61,12 +61,14 @@
                                             <table class="table table-center table-hover datatable">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th style="width:8%;">S.No</th>
-                                                        <th style="width:23%;">Currency</th>
-                                                        <th style="width:14%;">Currency Optimal</th>
-                                                        <th style="width:14%;">Count</th>
-                                                        <th style="width:20%;">Total</th>
-                                                        <th style="width:5%;">Action</th>
+                                                    <th style="width:7%;">S.No</th>
+                                                        <th style="width:19%;">Currency</th>
+                                                        <th style="width:13%;">Currency Optimal</th>
+                                                        <th style="width:15%">Rate / Doller</th>
+                                                        <th style="width:15%">Total</th>
+                                                        <th style="width:10%;">Count</th>
+                                                        <th style="width:13%;">Total Amount</th>
+                                                        <th style="width:8%;">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="purchaseproduct_fields">
@@ -107,14 +109,22 @@
                                                                 id="purchasecurrencyoptimal_amount1" name="purchasecurrencyoptimal_amount[]"
                                                                 value="{{ $PurchaseProducts_arr->currencyoptimal_amount }}" required />
                                                         </td>
+                                                        <td><input type="text" class="form-control purchasedoller_rate" value="{{ $PurchaseProducts_arr->doller_rate }}"
+                                                                id="purchasedoller_rate1" name="purchasedoller_rate[]" placeholder="Rate" /></td>
+
+                                                        <td><input type="text" class="form-control purchasedollertotal" value="{{ $PurchaseProducts_arr->dollertotal }}" 
+                                                                id="purchasedollertotal1" name="purchasedollertotal[]" readonly /></td>
+
                                                         <td><input type="text" class="form-control purchase_count"
                                                                  id="purchase_count1" name="purchase_count[]"
                                                                 placeholder="Count" value="{{ $PurchaseProducts_arr->count }}"/></td>
+
                                                         <td><input type="text" class="form-control purchase_total"
                                                                 readonly id="purchase_total1" name="purchase_total[]"
                                                                 placeholder="Total" value="{{ $PurchaseProducts_arr->total }}"/></td>
-                                                        <td><button class="btn btn-primary form-plus-btn addpurchasefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
-                                                        <button class="btn btn-danger form-plus-btn remove-purchasetr" type="button" id="" value="Add"><i class="fe fe-minus-circle"></i></button>
+
+                                                        <td><button class="additemplus_button addpurchasefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
+                                                        <button class="additemminus_button remove-purchasetr" type="button" id="" value="Add"><i class="fe fe-minus-circle"></i></button>
                                                         </td>
                                                         
                                                     </tr>

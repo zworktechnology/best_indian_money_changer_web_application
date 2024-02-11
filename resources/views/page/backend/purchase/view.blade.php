@@ -20,8 +20,7 @@
 
                            <div class="invoice-item invoice-item-date ">
                               <div class="row">
-                                 <div class="col-md-1" ></div>
-                                 <div class="col-md-3" >
+                                 <div class="col-md-4" >
                                     <p class="text-start invoice-details" style="color:#000;text-transform: uppercase;">
                                        Bill Number<span>: </span><strong style="color:red;"># {{ $Purchasedatas['billno'] }}</strong>
                                     </p>
@@ -42,39 +41,46 @@
 
                            <div class="invoice-item invoice-item-two">
                               <div class="row">
-                                 <div class="col-md-1"></div>
                                  <div class="col-md-3 border">
                                        <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 700;line-height: 35px; text-transform: uppercase;">Currency</span>
                                  </div>
                                  <div class="col-md-2 border">
                                        <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 700;line-height: 35px;text-transform: uppercase; ">Currency Optimal</span>
                                  </div>
-                                 <div class="col-md-3 border">
-                                       <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 700;line-height: 35px;text-transform: uppercase; ">Count</span>
+                                 <div class="col-md-1 border">
+                                       <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 700;line-height: 35px;text-transform: uppercase; ">Rate</span>
+                                 </div><div class="col-md-2 border">
+                                       <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 700;line-height: 35px;text-transform: uppercase; ">Total</span>
+                                 </div>
+                                 <div class="col-md-2 border">
+                                       <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 700;line-height: 35px;text-transform: uppercase; ">Qty</span>
                                  </div>
                                  <div class="col-md-2 border">
                                        <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 700;line-height: 35px;text-transform: uppercase; ">Total</span>
                                  </div>
-                                 <div class="col-md-1"></div>
 
                               </div>
                               <div class="row ">
                                  @foreach ($Purchasedatas['products'] as $index => $products_data)
                                     @if ($products_data['purchase_id'] == $Purchasedatas['id'])
-                                    <div class="col-md-1"></div>
                                     <div class="col-md-3 border">
                                           <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;line-height: 35px;text-transform: uppercase; ">{{ $products_data['currency'] }}</span>
                                     </div>
                                     <div class="col-md-2 border">
                                           <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;line-height: 35px;text-transform: uppercase; ">{{ $products_data['currencyoptimal_amount'] }}</span>
                                     </div>
-                                    <div class="col-md-3 border">
+                                    <div class="col-md-1 border">
+                                          <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;line-height: 35px;text-transform: uppercase; ">{{ $products_data['doller_rate'] }}</span>
+                                    </div>
+                                    <div class="col-md-2 border">
+                                          <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;line-height: 35px;text-transform: uppercase; ">{{ $products_data['dollertotal'] }}</span>
+                                    </div>
+                                    <div class="col-md-2 border">
                                           <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;line-height: 35px; text-transform: uppercase;">{{ $products_data['count'] }}</span>
                                     </div>
                                     <div class="col-md-2 border">
                                           <span style="vertical-align: inherit;vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;line-height: 35px; text-transform: uppercase;">₹ {{ $products_data['total'] }}</span>
                                     </div>
-                                    <div class="col-md-1"></div>
                                     @endif
                                  @endforeach
                               </div>

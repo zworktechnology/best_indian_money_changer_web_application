@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreign('currency_optimal_id')->references('id')->on('currency_optimals')->onDelete('cascade');
 
             $table->string('currencyoptimal_amount')->nullable();
+            $table->string('doller_rate')->nullable();
+            $table->string('dollertotal')->nullable();
             $table->string('count')->nullable();
             $table->string('total')->nullable();
             $table->boolean('soft_delete')->default(0);

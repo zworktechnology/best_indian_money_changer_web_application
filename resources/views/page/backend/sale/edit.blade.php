@@ -60,12 +60,14 @@
                                             <table class="table table-center table-hover datatable">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th style="width:8%;">S.No</th>
-                                                        <th style="width:23%;">Currency</th>
-                                                        <th style="width:14%;">Currency Optimal</th>
-                                                        <th style="width:14%;">Count</th>
-                                                        <th style="width:20%;">Total</th>
-                                                        <th style="width:5%;">Action</th>
+                                                        <th style="width:7%;">S.No</th>
+                                                        <th style="width:19%;">Currency</th>
+                                                        <th style="width:13%;">Currency Optimal</th>
+                                                        <th style="width:15%">Rate / Doller</th>
+                                                        <th style="width:15%">Total</th>
+                                                        <th style="width:10%;">Count</th>
+                                                        <th style="width:13%;">Total Amount</th>
+                                                        <th style="width:8%;">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="saleproduct_fields">
@@ -106,14 +108,16 @@
                                                                 id="currencyoptimal_amount1" name="currencyoptimal_amount[]"
                                                                 value="{{ $SaleProducts_arr->currencyoptimal_amount }}" required />
                                                         </td>
+                                                        <td><input type="text" class="form-control doller_rate" id="doller_rate1" name="doller_rate[]" placeholder="Rate" value="{{ $SaleProducts_arr->doller_rate }}"/></td>
+                                                        <td><input type="text" class="form-control dollertotal" id="dollertotal1" name="dollertotal[]" readonly value="{{ $SaleProducts_arr->dollertotal }}"/></td>
                                                         <td><input type="text" class="form-control sale_count"
                                                                  id="sale_count1" name="sale_count[]"
                                                                 placeholder="Count" value="{{ $SaleProducts_arr->count }}"/></td>
                                                         <td><input type="text" class="form-control sale_total"
                                                                 readonly id="sale_total1" name="sale_total[]"
                                                                 placeholder="Total" value="{{ $SaleProducts_arr->total }}"/></td>
-                                                        <td><button class="btn btn-primary form-plus-btn addsalefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
-                                                        <button class="btn btn-danger form-plus-btn remove-tr" type="button" id="" value="Add"><i class="fe fe-minus-circle"></i></button>
+                                                        <td><button class="additemplus_button addsalefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
+                                                        <button class="additemminus_button remove-tr" type="button" id="" value="Add"><i class="fe fe-minus-circle"></i></button>
                                                         </td>
                                                         
                                                     </tr>

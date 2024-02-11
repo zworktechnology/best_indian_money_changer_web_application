@@ -10,7 +10,7 @@
          </div>
 
          <form autocomplete="off" method="POST"
-                action="{{ route('currency.edit', ['unique_id' => $currency_index_datas->unique_id]) }}" enctype="multipart/form-data">
+                action="{{ route('currency.edit', ['unique_id' => $currency_index_datas['unique_id']]) }}" enctype="multipart/form-data">
                 @csrf
 
             <div class="modal-body">
@@ -18,11 +18,11 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group">
                             <label>Name<span class="text-danger">*</span></label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="India" value="{{ $currency_index_datas->name }}">
+                            <input type="text" name="name" id="name" class="form-control" placeholder="India" value="{{ $currency_index_datas['name'] }}">
                         </div>
                         <div class="form-group">
                             <label>Code<span class="text-danger">*</span></label>
-                            <input type="text" name="code" id="code" class="form-control" placeholder="INR" value="{{ $currency_index_datas->code }}">
+                            <input type="text" name="code" id="code" class="form-control" placeholder="INR" value="{{ $currency_index_datas['code'] }}">
                         </div>
                     </div>
                 </div>

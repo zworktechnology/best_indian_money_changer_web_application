@@ -133,19 +133,24 @@
                                     <tr>
                                         <th>Currency</th>
                                         <th>Count</th>
-                                        <th>Price Per Currency in INR</th>
+                                        <th>Price / Currency in INR</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($purchase_index_data as $keydata => $purchase_index_datas)
-                                    <tr>
-                                        <td>{{ $purchase_index_datas->currency->name }}</td>
-                                        <td>{{ $purchase_index_datas->purchases_count }}</td>
-                                        <td>{{ $purchase_index_datas->purchases_count_per_price }}</td>
-                                        <td>{{ $purchase_index_datas->total }}</td>
-                                    </tr>
-                                    @endforeach
+                                        @foreach ($Purchasedata as $keydata => $Purchasedatas)
+                                       
+                                            @foreach ($Purchasedatas['products'] as $index => $terms_array)
+                                            @if ($terms_array['purchase_id'] == $Purchasedatas['id'])
+                                            <tr>
+                                                <td>{{ $terms_array['currency'] }}</td>
+                                                <td>{{ $terms_array['count'] }}</td>
+                                                <td>{{ $terms_array['doller_rate'] }}</td>
+                                                <td>{{ $terms_array['total'] }}</td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -175,95 +180,25 @@
                                     <tr>
                                         <th>Currency</th>
                                         <th>Count</th>
-                                        <th>Price Per Currency in INR</th>
+                                        <th>Price / Currency in INR</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($sale_index_data as $keydata => $sales_index_datas)
-                                    <tr>
-                                        <td>{{ $sales_index_datas->currency->name }}</td>
-                                        <td>{{ $sales_index_datas->sales_count }}</td>
-                                        <td>{{ $sales_index_datas->sales_count_per_price }}</td>
-                                        <td>{{ $sales_index_datas->total }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-center">
-                            <div class="col">
-                                <h5 class="card-title">Recent Debit</h5>
-                            </div>
-                            <div class="col-auto">
-                                <a href="{{ route('expense.index') }}" class="btn-right btn btn-sm btn-outline-primary">
-                                    View All
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
 
-                        <div class="table-responsive">
-
-                            <table class="table table-stripped table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                       <th>Amount</th>
-                                       <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($expense_index_data as $keydata => $debits)
-                                    <tr>
-                                        <td>{{$debits->amount}}</td>
-                                        <td>{{$debits->description}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-center">
-                            <div class="col">
-                                <h5 class="card-title">Recent Credit</h5>
-                            </div>
-                            <div class="col-auto">
-                                <a href="{{ route('income.index') }}" class="btn-right btn btn-sm btn-outline-primary">
-                                    View All
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="table-responsive">
-
-                            <table class="table table-stripped table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Amount</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($income_index_data as $keydata => $income_index_datas)
-                                    <tr>
-                                        <td>{{$income_index_datas->amount}}</td>
-                                        <td>{{$income_index_datas->description}}</td>
-                                    </tr>
-                                    @endforeach
+                                @foreach ($saledata as $keydata => $saledatas)
+                                       
+                                            @foreach ($saledatas['saleproducts'] as $index => $terms_arrays)
+                                            @if ($terms_arrays['sales_id'] == $saledatas['id'])
+                                            <tr>
+                                                <td>{{ $terms_arrays['currency'] }}</td>
+                                                <td>{{ $terms_arrays['count'] }}</td>
+                                                <td>{{ $terms_arrays['doller_rate'] }}</td>
+                                                <td>{{ $terms_arrays['total'] }}</td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        @endforeach
                                 </tbody>
                             </table>
                         </div>

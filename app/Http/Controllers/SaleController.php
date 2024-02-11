@@ -35,6 +35,8 @@ class SaleController extends Controller
                 $currency_optimal = CurrencyOptimal::findOrFail($SaleProduct_arr->currency_optimal_id);
                 $products[] = array(
                     'currencyoptimal_amount' => $SaleProduct_arr->currencyoptimal_amount,
+                    'doller_rate' => $SaleProduct_arr->doller_rate,
+                    'dollertotal' => $SaleProduct_arr->dollertotal,
                     'count' => $SaleProduct_arr->count,
                     'total' => $SaleProduct_arr->total,
                     'code' => $currency->code,
@@ -89,6 +91,8 @@ class SaleController extends Controller
                 $currency_optimal = CurrencyOptimal::findOrFail($SaleProduct_arr->currency_optimal_id);
                 $products[] = array(
                     'currencyoptimal_amount' => $SaleProduct_arr->currencyoptimal_amount,
+                    'doller_rate' => $SaleProduct_arr->doller_rate,
+                    'dollertotal' => $SaleProduct_arr->dollertotal,
                     'count' => $SaleProduct_arr->count,
                     'total' => $SaleProduct_arr->total,
                     'code' => $currency->code,
@@ -176,9 +180,23 @@ class SaleController extends Controller
             $SaleProduct->currency_id = $currency_id;
             $SaleProduct->currency_optimal_id = $request->currency_optimal_id[$key];
             $SaleProduct->currencyoptimal_amount = $request->currencyoptimal_amount[$key];
+            $SaleProduct->doller_rate = $request->doller_rate[$key];
+            $SaleProduct->dollertotal = $request->dollertotal[$key];
             $SaleProduct->count = $request->sale_count[$key];
             $SaleProduct->total = $request->sale_total[$key];
             $SaleProduct->save();
+
+            $currency_optimal_id = $request->currency_optimal_id[$key];
+
+            $OptimalData = CurrencyOptimal::findOrFail($currency_optimal_id);
+            if($OptimalData != ""){
+                $doller_count = $OptimalData->available_stock;
+                $totaldoller_count = $doller_count - $request->sale_count[$key];
+
+                DB::table('currency_optimals')->where('id', $currency_optimal_id)->update([
+                    'available_stock' => $totaldoller_count
+                ]);
+            }
         }
 
 
@@ -304,11 +322,37 @@ class SaleController extends Controller
                 $currency_id = $request->currency_id[$key];
                 $currency_optimal_id = $request->currency_optimal_id[$key];
                 $currencyoptimal_amount = $request->currencyoptimal_amount[$key];
+                $doller_rate = $request->doller_rate[$key];
+                $dollertotal = $request->dollertotal[$key];
                 $count = $request->sale_count[$key];
                 $total = $request->sale_total[$key];
 
+
+                $inserted_products = SaleProduct::where('id', '=', $sales_products_id)->where('currency_optimal_id', '=', $currency_optimal_id)->first();
+                $inserted_stock = $inserted_products->count;
+
+                $OptimalDatas = CurrencyOptimal::findOrFail($currency_optimal_id);
+                $availablestock = $OptimalDatas->available_stock;
+
+                $editedstock = $availablestock + $inserted_stock;
+                DB::table('currency_optimals')->where('id', $currency_optimal_id)->update([
+                    'available_stock' => $editedstock
+                ]);
+
+
+
                 DB::table('sale_products')->where('id', $ids)->update([
-                    'sales_id' => $salesid, 'currency_id' => $currency_id, 'currency_optimal_id' => $currency_optimal_id, 'currencyoptimal_amount' => $currencyoptimal_amount, 'count' => $count, 'total' => $total
+                    'sales_id' => $salesid, 'currency_id' => $currency_id, 'currency_optimal_id' => $currency_optimal_id,
+                     'currencyoptimal_amount' => $currencyoptimal_amount, 'doller_rate' => $doller_rate, 'dollertotal' => $dollertotal, 'count' => $count, 'total' => $total
+                ]);
+
+
+                $OptimalDatasid = CurrencyOptimal::findOrFail($currency_optimal_id);
+                $availablestocks = $OptimalDatasid->available_stock;
+                $newstock = $availablestocks - $count;
+
+                DB::table('currency_optimals')->where('id', $currency_optimal_id)->update([
+                    'available_stock' => $newstock
                 ]);
 
             } else if ($sales_products_id == '') {
@@ -320,9 +364,24 @@ class SaleController extends Controller
                 $SaleProduct->currency_id = $request->currency_id[$key];
                 $SaleProduct->currency_optimal_id = $request->currency_optimal_id[$key];
                 $SaleProduct->currencyoptimal_amount = $request->currencyoptimal_amount[$key];
+                $SaleProduct->doller_rate = $request->doller_rate[$key];
+                $SaleProduct->dollertotal = $request->dollertotal[$key];
                 $SaleProduct->count = $request->sale_count[$key];
                 $SaleProduct->total = $request->sale_total[$key];
                 $SaleProduct->save();
+
+
+                $currencyoptimal_id = $request->currency_optimal_id[$key];
+
+                $OptimalData = CurrencyOptimal::findOrFail($currencyoptimal_id);
+                if($OptimalData != ""){
+                    $doller_count = $OptimalData->available_stock;
+                    $totaldoller_count = $doller_count - $request->sale_count[$key];
+
+                    DB::table('currency_optimals')->where('id', $currencyoptimal_id)->update([
+                        'available_stock' => $totaldoller_count
+                    ]);
+                }
             }
         }
 

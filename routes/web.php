@@ -43,6 +43,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->post('/zwork_technology/currency/edit/{unique_id}', [CurrencyController::class, 'edit'])->name('currency.edit');
     // DELETE
     Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/currency/delete/{unique_id}', [CurrencyController::class, 'delete'])->name('currency.delete');
+    // DATAE FILTER
+    Route::middleware(['auth:sanctum', 'verified'])->put('/zwork_technology/currency/datefilter', [CurrencyController::class, 'datefilter'])->name('currency.datefilter');
 });
 
 // CURRENCY OPTIMAL CONTROLLER

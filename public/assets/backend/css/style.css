@@ -6096,7 +6096,7 @@ table .badge {
 }
 .invoice-total-footer h4 {
   margin-bottom: 0;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   color: #3F4254;
 }
@@ -6443,6 +6443,18 @@ table .badge {
   border-bottom: 1px solid #EFEFEF; */
   margin: 0 0 15px;
   /* padding: 15px 0; */
+}
+
+.additemplus_button {
+  border-color: #7539ff;
+  background: #7638ff;
+  color: white;
+}
+
+.additemminus_button {
+  border-color: #d65562;
+  background: #db3040;
+  color: white;
 }
 
 .invoice-item-bg .invoice-item .invoice-details-two {
