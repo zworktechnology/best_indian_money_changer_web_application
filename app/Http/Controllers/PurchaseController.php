@@ -47,6 +47,8 @@ class PurchaseController extends Controller
                 );
             }
 
+           
+
             $Purchasedata[] = array(
                 'unique_id' => $datas->unique_id,
                 'date' => $datas->date,
@@ -100,6 +102,13 @@ class PurchaseController extends Controller
                     'purchase_id' => $PurchaseProduct_Arr->purchase_id,
 
                 );
+            }
+
+            $latest = Purchase::where('soft_delete', '!=', 1)->where('customer_id', '=', $datas->customer_id)->latest('id')->first();
+            if($latest != ""){
+                $latestid = 'yes';
+            }else {
+                $latestid = 'no';
             }
 
             $Purchasedata[] = array(

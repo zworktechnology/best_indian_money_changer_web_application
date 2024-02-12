@@ -47,6 +47,8 @@ class SaleController extends Controller
                 );
             }
 
+            
+
             $saledata[] = array(
                 'unique_id' => $datas->unique_id,
                 'date' => $datas->date,

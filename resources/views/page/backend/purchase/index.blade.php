@@ -62,10 +62,13 @@
                                                 <td>{{ $Purchasedatas['paid_amount'] }}</td>
                                                 <td>
                                                     <ul class="list-unstyled hstack gap-1 mb-0">
+                                                  
                                                     <li>
                                                             <a href="{{ route('purchase.edit', ['unique_id' => $Purchasedatas['unique_id']]) }}"
                                                                 class="badge" style="color:#28084b;background: #a9ac11;">Edit</a>
                                                     </li>
+                                                   
+
                                                     <li>
                                                         <a class="badge" href="#purchaseview{{ $Purchasedatas['unique_id'] }}" data-bs-toggle="modal"
                                                         data-bs-target=".purchaseview-modal-xl{{ $Purchasedatas['unique_id'] }}" style="color: #f8f9fa;background: #8068dc;">View</a>

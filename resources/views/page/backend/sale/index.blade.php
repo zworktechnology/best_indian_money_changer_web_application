@@ -62,7 +62,7 @@
                                                 <td>{{ $saledatas['paid_amount'] }}</td>
                                                 <td>
                                                     <ul class="list-unstyled hstack gap-1 mb-0">
-                                                    <li>
+                                                    <li >
                                                             <a href="{{ route('sale.edit', ['unique_id' => $saledatas['unique_id']]) }}"
                                                                 class="badge" style="color:#28084b;background: #a9ac11;">Edit</a>
                                                     </li>
