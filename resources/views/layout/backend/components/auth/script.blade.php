@@ -204,8 +204,8 @@ $(document).ready(function() {
             });
 
 
-          
-           
+
+
 
             $(document).on('click', '.addsalefields', function() {
                 ++i;
@@ -224,7 +224,7 @@ $(document).ready(function() {
                     '<option value="" selected hidden class="text-muted">Select CurrencyOptimal</option></select>' +
                     '<input type="hidden" class="form-control currencyoptimal_amount" id="currencyoptimal_amount' + i + '" name="currencyoptimal_amount[]"  value="" required /></td>' +
                     '<td><input type="text" class="form-control doller_rate" id="doller_rate' + i + '" name="doller_rate[]" placeholder="Rate" /></td>' +
-                    '<td><input type="text" class="form-control dollertotal" id="dollertotal' + i + '" name="dollertotal[]" readonly /></td>' +
+                    '<td hidden><input type="text" class="form-control dollertotal" id="dollertotal' + i + '" name="dollertotal[]" readonly /></td>' +
                     '<td><input type="text" class="form-control sale_count" id="sale_count' + i + '" name="sale_count[]" placeholder="Count" placeholder="Qty"/></td>' +
                     '<td><input type="text" class="form-control sale_total" readonly id="sale_total' + i + '" name="sale_total[]"  /></td>' +
                     '<td><button class="additemplus_button addsalefields" style="margin-right: 3px;" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>' +
@@ -339,7 +339,7 @@ $(document).ready(function() {
                         });
                     });
                 }
-                    
+
 
                 if(i == '3'){
                     $('#salecurrency_id' + i).on('change', function() {
@@ -981,7 +981,7 @@ $(document).ready(function() {
                     });
                 }
 
-                    
+
 
 
             });
@@ -1128,7 +1128,7 @@ $(document).ready(function() {
                     '<option value="" selected hidden class="text-muted">Select CurrencyOptimal</option></select>' +
                     '<input type="hidden" class="form-control purchasecurrencyoptimal_amount" id="purchasecurrencyoptimal_amount' + k + '" name="purchasecurrencyoptimal_amount[]"  value="" required /></td>' +
                     '<td><input type="text" class="form-control purchasedoller_rate" id="purchasedoller_rate' + k + '" name="purchasedoller_rate[]" placeholder="Rate" /></td>' +
-                    '<td><input type="text" class="form-control purchasedollertotal" id="purchasedollertotal' + k + '" name="purchasedollertotal[]" readonly /></td>' +
+                    '<td hidden><input type="text" class="form-control purchasedollertotal" id="purchasedollertotal' + k + '" name="purchasedollertotal[]" readonly /></td>' +
                     '<td><input type="text" class="form-control purchase_count" id="purchase_count' + k + '" name="purchase_count[]" placeholder="Qty" /></td>' +
                     '<td><input type="text" class="form-control purchase_total" readonly id="purchase_total' + k + '" name="purchase_total[]" placeholder="Total" /></td>' +
                     '<td><button class="additemplus_button addpurchasefields" style="margin-right: 3px;" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>' +
@@ -1243,7 +1243,7 @@ $(document).ready(function() {
                         });
                     });
                 }
-                    
+
 
                 if(k == '3'){
                     $('#purchasecurrency_id' + k).on('change', function() {
@@ -1817,7 +1817,7 @@ $(document).ready(function() {
                     });
                 }
 
-                    
+
                 if(k == '10'){
                     $('#purchasecurrency_id' + k).on('change', function() {
                         var currency_id = this.value;
@@ -1902,7 +1902,7 @@ $(document).ready(function() {
             });
 
 
-           
+
 
 });
 
@@ -2135,7 +2135,7 @@ $(document).on("keyup", "input[name*=purchase_count]", function() {
         $('.purchasebalance_amount').text('₹ ' + salebalance.toFixed(2));
     });
 
-        
+
     $(document).on("keyup", 'input.purchasepaid_amount', function() {
             var purchasepaid_amount = $(this).val();
             var purchaseoverallamount = $(".purchaseoverallamount").val();
@@ -2158,5 +2158,5 @@ $(document).on("keyup", "input[name*=purchase_count]", function() {
 
 
 
-            
+
 </script>
