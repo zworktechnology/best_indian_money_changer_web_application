@@ -65,7 +65,7 @@
                                                         <th style="width:19%;">Currency</th>
                                                         <th style="width:13%;">Currency Optimal</th>
                                                         <th style="width:15%">Rate / Doller</th>
-                                                        <th style="width:15%">Total</th>
+                                                        <th style="width:15%" hidden>Total</th>
                                                         <th style="width:10%;">Count</th>
                                                         <th style="width:13%;">Total Amount</th>
                                                         <th style="width:8%;">Action</th>
@@ -112,7 +112,7 @@
                                                         <td><input type="text" class="form-control purchasedoller_rate" value="{{ $PurchaseProducts_arr->doller_rate }}"
                                                                 id="purchasedoller_rate1" name="purchasedoller_rate[]" placeholder="Rate" /></td>
 
-                                                        <td><input type="text" class="form-control purchasedollertotal" value="{{ $PurchaseProducts_arr->dollertotal }}" 
+                                                        <td hidden><input type="text" class="form-control purchasedollertotal" value="{{ $PurchaseProducts_arr->dollertotal }}"
                                                                 id="purchasedollertotal1" name="purchasedollertotal[]" readonly /></td>
 
                                                         <td><input type="text" class="form-control purchase_count"
@@ -126,7 +126,7 @@
                                                         <td><button class="additemplus_button addpurchasefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
                                                         <button class="additemminus_button remove-purchasetr" type="button" id="" value="Add"><i class="fe fe-minus-circle"></i></button>
                                                         </td>
-                                                        
+
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
