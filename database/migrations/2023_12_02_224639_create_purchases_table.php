@@ -31,6 +31,7 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
 
             $table->string('grand_total')->nullable();
+            $table->string('purchasebalancetype')->nullable();
             $table->string('oldbalanceamount')->nullable();
             $table->string('overallamount')->nullable();
             $table->string('paid_amount')->nullable();

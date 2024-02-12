@@ -145,4 +145,4 @@ Route::get('getcurrencies/', [CurrencyController::class, 'getcurrencies']);
 Route::get('getcurrencyamount/{currency_id}', [CurrencyOptimalController::class, 'getcurrencyamount']);
 Route::get('getcurrencyoptimalamount/{currency_optimal_id}', [CurrencyOptimalController::class, 'getcurrencyoptimalamount']);
 Route::get('/getoldbalance', [CustomerController::class, 'getoldbalance']);
-Route::get('/getoldbalanceforpurchase', [CustomerController::class, 'getoldbalanceforpurchase']);
+Route::get('/getoldbalanceforsales', [CustomerController::class, 'getoldbalanceforsales']);

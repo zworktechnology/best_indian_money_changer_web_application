@@ -31,9 +31,10 @@ class CurrencyController extends Controller
             if($PurchaseProducttotal != 0){
                 $PurchaseProduct_total = $PurchaseProducttotal;
                 $average_rate = $PurchaseProduct_total / $rate_count;
+                $totalaverage = number_format((float)$average_rate, 2, '.', '');
             }else {
                 $PurchaseProduct_total = 0;
-                $average_rate = 0;
+                $totalaverage = 0;
             }
 
                         $currency_data[] = array(
@@ -43,7 +44,7 @@ class CurrencyController extends Controller
                             'country' => $datas->country,
                             'description' => $datas->description,
                             'id' => $datas->id,
-                            'average_rate' => $average_rate,
+                            'average_rate' => $totalaverage,
                         );
         }
 
@@ -68,9 +69,10 @@ class CurrencyController extends Controller
             if($PurchaseProducttotal != 0){
                 $PurchaseProduct_total = $PurchaseProducttotal;
                 $average_rate = $PurchaseProduct_total / $rate_count;
+                $totalaverage = number_format((float)$average_rate, 2, '.', '');
             }else {
                 $PurchaseProduct_total = 0;
-                $average_rate = 0;
+                $totalaverage = 0;
             }
 
                         $currency_data[] = array(
@@ -80,7 +82,7 @@ class CurrencyController extends Controller
                             'country' => $datas->country,
                             'description' => $datas->description,
                             'id' => $datas->id,
-                            'average_rate' => $average_rate,
+                            'average_rate' => $totalaverage,
                         );
         }
 

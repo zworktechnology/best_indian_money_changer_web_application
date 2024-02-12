@@ -160,6 +160,7 @@ class PurchaseController extends Controller
         $data->time = $request->get('time');
         $data->customer_id = $request->get('customer_id');
         $data->grand_total = $request->get('purchasegrandtotal');
+        $data->purchasebalancetype = $request->get('purchasebalancetype');
         $data->oldbalanceamount = $request->get('purchaseoldbalanceamount');
         $data->overallamount = $request->get('purchaseoverallamount');
         $data->paid_amount = $request->get('purchasepaid_amount');
@@ -199,22 +200,44 @@ class PurchaseController extends Controller
         }
 
 
-
-        $PaymentData = Payment::where('customer_id', '=', $customer_id)->first();
+        $PaymentData = Payment::where('customer_id', '=', $customer_id)->latest('id')->first();
         if($PaymentData != ""){
-            $total_amount = $PaymentData->total_amount;
-            $total_paid = $PaymentData->total_paid;
 
-            $grand_total = $request->get('purchasegrandtotal');
-            $paid_amount = $request->get('purchasepaid_amount');
 
-            $new_grossamount = $total_amount + $grand_total;
-            $new_paid = $total_paid + $paid_amount;
-            $new_balance = $new_grossamount - $new_paid;
+            if($PaymentData->total_balance != ""){
 
-            DB::table('payments')->where('customer_id', $customer_id)->update([
-                'total_amount' => $new_grossamount,  'total_paid' => $new_paid, 'total_balance' => $new_balance
-            ]);
+                $grand_total = $request->get('purchasegrandtotal');
+                $total_amount = $grand_total - $PaymentData->total_balance;
+                $paid_amount = $request->get('purchasepaid_amount');
+                $balnceamount = $total_amount - $paid_amount;
+
+                $data = new Payment();
+
+                $data->customer_id = $customer_id;
+                $data->purchase_amount = $total_amount;
+                $data->purchase_paid = $paid_amount;
+                $data->purchase_balance = $balnceamount;
+                $data->purchase_id = $purchase_id;
+                $data->save();
+
+            }else if($PaymentData->purchase_balance != ""){
+
+                $grand_total = $request->get('purchasegrandtotal');
+                $total_amountnew = $grand_total + $PaymentData->purchase_balance;
+                $paid_amountnew = $request->get('purchasepaid_amount');
+                $balnceamountnew = $total_amountnew - $paid_amountnew;
+
+                $data = new Payment();
+
+                $data->customer_id = $customer_id;
+                $data->total_amount = $total_amountnew;
+                $data->total_paid = $paid_amountnew;
+                $data->total_balance = $balnceamountnew;
+                $data->purchase_id = $purchase_id;
+                $data->save();
+            }
+
+            
         }else {
             $gross_amount = $request->get('purchasegrandtotal');
             $payable_amount = $request->get('purchasepaid_amount');
@@ -223,9 +246,10 @@ class PurchaseController extends Controller
             $data = new Payment();
 
             $data->customer_id = $customer_id;
-            $data->total_amount = $request->get('purchasegrandtotal');
-            $data->total_paid = $request->get('purchasepaid_amount');
-            $data->total_balance = $balance_amount;
+            $data->purchase_amount = $request->get('purchasegrandtotal');
+            $data->purchase_paid = $request->get('purchasepaid_amount');
+            $data->purchase_balance = $balance_amount;
+            $data->purchase_id = $purchase_id;
             $data->save();
         }
 
@@ -254,13 +278,13 @@ class PurchaseController extends Controller
 
         $purchase_customerid = $Purchasedata->customer_id;
 
-        $PaymentData = Payment::where('customer_id', '=', $purchase_customerid)->first();
+        $PaymentData = Payment::where('customer_id', '=', $purchase_customerid)->where('purchase_id', '=', $Purchasedata->id)->first();
         if($PaymentData != ""){
 
-            $old_grossamount = $PaymentData->total_amount;
-            $old_paid = $PaymentData->total_paid;
+            $old_grossamount = $PaymentData->purchase_amount;
+            $old_paid = $PaymentData->purchase_paid;
 
-            $oldentry_grossamount = $Purchasedata->grand_total;
+            $oldentry_grossamount = $Purchasedata->overallamount;
             $oldentry_paid = $Purchasedata->paid_amount;
 
             $gross_amount = $request->get('purchasegrandtotal');
@@ -274,8 +298,8 @@ class PurchaseController extends Controller
 
             $new_balance = $newgross - $newpaid;
 
-            DB::table('payments')->where('customer_id', $purchase_customerid)->update([
-                'total_amount' => $newgross,  'total_paid' => $newpaid, 'total_balance' => $new_balance
+            DB::table('payments')->where('customer_id', $purchase_customerid)->where('purchase_id', $Purchasedata->id)->update([
+                'purchase_amount' => $newgross,  'purchase_paid' => $newpaid, 'purchase_balance' => $new_balance
             ]);
         }
 
@@ -283,6 +307,7 @@ class PurchaseController extends Controller
         $Purchasedata->date = $request->get('date');
         $Purchasedata->time = $request->get('time');
         $Purchasedata->grand_total = $request->get('purchasegrandtotal');
+        $Purchasedata->purchasebalancetype = $request->get('purchasebalancetype');
         $Purchasedata->oldbalanceamount = $request->get('purchaseoldbalanceamount');
         $Purchasedata->overallamount = $request->get('purchaseoverallamount');
         $Purchasedata->paid_amount = $request->get('purchasepaid_amount');
@@ -335,7 +360,7 @@ class PurchaseController extends Controller
 
 
                 $ids = $purchase_products_id;
-                $currency_id = $request->currency_id[$key];
+              //  $currency_id = $request->currency_id[$key];
                 $currency_optimal_id = $request->purchasecurrency_optimal_id[$key];
                 $currencyoptimal_amount = $request->purchasecurrencyoptimal_amount[$key];
                 $purchasedoller_rate = $request->purchasedoller_rate[$key];
@@ -356,7 +381,7 @@ class PurchaseController extends Controller
 
 
                 DB::table('purchase_products')->where('id', $ids)->update([
-                    'purchase_id' => $purchase_id, 'currency_id' => $currency_id, 'currency_optimal_id' => $currency_optimal_id,
+                    'purchase_id' => $purchase_id, 'currency_optimal_id' => $currency_optimal_id,
                      'currencyoptimal_amount' => $currencyoptimal_amount, 'doller_rate' => $purchasedoller_rate, 'dollertotal' => $purchasedollertotal, 'count' => $count, 'total' => $total
                 ]);
 
@@ -416,26 +441,9 @@ class PurchaseController extends Controller
         $customer_id = $data->customer_id;
 
 
-        $PurchasebranchwiseData = Payment::where('customer_id', '=', $customer_id)->first();
+        $PurchasebranchwiseData = Payment::where('customer_id', '=', $customer_id)->where('purchase_id', '=', $data->id)->first();
         if($PurchasebranchwiseData != ""){
-
-
-            $old_grossamount = $PurchasebranchwiseData->total_amount;
-            $old_paid = $PurchasebranchwiseData->total_paid;
-
-            $oldentry_grossamount = $data->grand_total;
-            $oldentry_paid = $data->paid_amount;
-
-         
-                $updated_gross = $old_grossamount - $oldentry_grossamount;
-                $updated_paid = $old_paid - $oldentry_paid;
-
-                $new_balance = $updated_gross - $updated_paid;
-
-            DB::table('payments')->where('customer_id', $customer_id)->update([
-                'total_amount' => $updated_gross,  'total_paid' => $updated_paid, 'total_balance' => $new_balance
-            ]);
-
+            $PurchasebranchwiseData->delete();
         }
 
         $data->soft_delete = 1;

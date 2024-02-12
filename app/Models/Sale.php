@@ -17,6 +17,7 @@ class Sale extends Model
         'currency_id',
         'customer_id',
         'grand_total',
+        'salesbalancetype',
         'oldbalanceamount',
         'overallamount',
         'paid_amount',

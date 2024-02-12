@@ -133,10 +133,14 @@
                                                                 <h4 style="text-transform:uppercase;color: green;">Grand Total <span class="salegrand_total">  </span></h4>
                                                                 <input type="hidden" class="form-control grand_total" name="grand_total" id="grand_total">
                                                             </div>
-                                                            <div class="invoice-total-footer">
-                                                                <h4 style="text-transform:uppercase;color: #db9161;">Old Balance <span class="saleold_balance">  </span></h4>
+                                                            <div class="invoice-total-footer customer_balnce" >
+                                                                <h4 style="text-transform:uppercase;color: #db9161;">Balance<span class="saleold_balance">  </span></h4>
                                                                 <input type="hidden" class="form-control oldbalanceamount" name="oldbalanceamount" id="oldbalanceamount">
+                                                                <input type="hidden" name="salesbalancetype" id="salesbalancetype" class="salesbalancetype" value="" />
                                                             </div>
+
+                                                            
+
                                                             <div class="invoice-total-footer">
                                                                 <h4 style="text-transform:uppercase;color: darkgreen;">Total <span class="sale_overallamount">  </span></h4>
                                                                 <input type="hidden" class="form-control overallamount" name="overallamount" id="overallamount">

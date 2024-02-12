@@ -135,8 +135,9 @@
                                                                 <input type="hidden" class="form-control purchasegrandtotal" name="purchasegrandtotal" id="purchase_grandtotal">
                                                             </div>
                                                             <div class="invoice-total-footer">
-                                                                <h4 style="text-transform:uppercase;color: #db9161;">Old Balance <span class="purchaseold_balance">  </span></h4>
+                                                                <h4 style="text-transform:uppercase;color: #db9161;">Balance <span class="purchaseold_balance">  </span></h4>
                                                                 <input type="hidden" class="form-control purchaseoldbalanceamount" name="purchaseoldbalanceamount" id="purchaseoldbalanceamount">
+                                                                <input type="hidden" name="purchasebalancetype" id="purchasebalancetype" class="purchasebalancetype" value="" />
                                                             </div>
                                                             <div class="invoice-total-footer">
                                                                 <h4 style="text-transform:uppercase;color: darkgreen;">Total <span class="purchase_overallamount">  </span></h4>

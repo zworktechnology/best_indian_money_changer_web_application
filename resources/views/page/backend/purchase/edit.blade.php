@@ -44,7 +44,7 @@
                                                         <label>Customer <span class="text-danger">*</span></label>
                                                         <select
                                                             class="form-control select purchasecustomer_id js-example-basic-single"
-                                                            name="customer_id" id="customer_id" required>
+                                                            name="customer_id" id="customer_id" disabled>
                                                             <option value="" disabled selected hiddden>Select Customer
                                                             </option>
                                                             @foreach ($customers as $customers_arr)
@@ -83,7 +83,7 @@
                                                         <input type="hidden" id="purchase_products_id" name="purchase_products_id[]" value="{{ $PurchaseProducts_arr->id }}"/>
                                                             <select
                                                                 class="form-control  currency_id select js-example-basic-single"
-                                                                name="currency_id[]" id="purchasecurrency_id1" required>
+                                                                name="currency_id[]" id="purchasecurrency_id1" disabled>
                                                                 <option value="" selected hidden class="text-muted">
                                                                     Select Currency
                                                                 </option>
@@ -155,6 +155,7 @@
                                                             <div class="invoice-total-footer">
                                                                 <h4 style="text-transform:uppercase;color: #db9161;">Old Balance <span class="purchaseold_balance"> {{ $PurchaseData->oldbalanceamount }} </span></h4>
                                                                 <input type="hidden" class="form-control purchaseoldbalanceamount" name="purchaseoldbalanceamount" id="purchaseoldbalanceamount" value="{{ $PurchaseData->oldbalanceamount }}">
+                                                                <input type="hidden" name="purchasebalancetype" id="purchasebalancetype" class="purchasebalancetype" value="{{ $PurchaseData->purchasebalancetype }}" />
                                                             </div>
                                                             <div class="invoice-total-footer">
                                                                 <h4 style="text-transform:uppercase;color: darkgreen;">Total <span class="purchase_overallamount"> {{ $PurchaseData->overallamount }} </span></h4>

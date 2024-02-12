@@ -22,11 +22,15 @@ return new class extends Migration
             $table->string('total_paid')->nullable();
             $table->string('total_balance')->nullable();
 
+            $table->unsignedBigInteger('sales_id')->nullable();
+
             $table->unsignedBigInteger('purchase_customerid')->nullable();
             $table->foreign('purchase_customerid')->references('id')->on('customers')->onDelete('cascade');
             $table->string('purchase_amount')->nullable();
             $table->string('purchase_paid')->nullable();
             $table->string('purchase_balance')->nullable();
+
+            $table->unsignedBigInteger('purchase_id')->nullable();
 
 
             $table->timestamps();

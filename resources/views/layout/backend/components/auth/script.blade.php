@@ -151,10 +151,18 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.overallamount').val(grand_total.toFixed(2));
-                                                $('.sale_overallamount').text(grand_total.toFixed(2));
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+                                                }else if(salesbalancetype == 'minus'){
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+                                                }
+                                               
+                                                
+                                                $('.overallamount').val(grand_total);
+                                                $('.sale_overallamount').text(grand_total);
 
                                                 var salepaid_amount = $('.salepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(salepaid_amount);
@@ -171,33 +179,71 @@ $(document).ready(function() {
             });
 
 
-
             $('.salecustomer_id').on('change', function() {
                 var salecustomer_id = $(this).val();
                 if(salecustomer_id){
                         $('.saleold_balance').text('');
-                        $('.oldbalanceamount').val('');
+                        $('.balance_haveto_give').val('');
+                        $(".salesbalancetype").val('');
+
                         $.ajax({
-                        url: '/getoldbalance/',
+                        url: '/getoldbalanceforsales/',
                         type: 'get',
                         data: {_token: "{{ csrf_token() }}",
                                 salecustomer_id: salecustomer_id,
                                 },
                         dataType: 'json',
                             success: function(response) {
-                                console.log(response);
-                                        $(".oldbalanceamount").val(response['data']);
-                                        $('.saleold_balance').text(response['data']);
+                                
+                                if(response){
+                                    var output = response.length;
+                                    console.log(response);
+                                    for (var i = 0; i < output; i++) {
 
-                                        var gross_amount = $(".grand_total").val();
-                                        var grand_total = Number(gross_amount) - Number(response['data']);
-                                        $('.overallamount').val(grand_total.toFixed(2));
-                                        $('.sale_overallamount').text(grand_total.toFixed(2));
+                                        //console.log(response[i]['total_balance']);
 
-                                        var salepaid_amount = $(".salepaid_amount").val();
-                                        var pending_amount = Number(grand_total) - Number(salepaid_amount);
-                                        $('.balance_amount').val(pending_amount.toFixed(2));
-                                        $('.salebalance_amount').text(pending_amount.toFixed(2));
+                                        if(response[i]['purchase_balance'] != null){
+
+                                            $(".oldbalanceamount").val(response[i]['purchase_balance']);
+                                            $('.saleold_balance').text(response[i]['purchase_balance']);
+                                            $(".salesbalancetype").val('minus');
+
+                                            var gross_amount = $(".grand_total").val();
+                                            var grand_total = Number(gross_amount) - Number(response[i]['purchase_balance']);
+                                            $('.overallamount').val(grand_total.toFixed(2));
+                                            $('.sale_overallamount').text(grand_total.toFixed(2));
+
+                                            var salepaid_amount = $(".salepaid_amount").val();
+                                            var pending_amount = Number(grand_total) - Number(salepaid_amount);
+                                            $('.balance_amount').val(pending_amount.toFixed(2));
+                                            $('.salebalance_amount').text(pending_amount.toFixed(2));
+
+                                        }else if(response[i]['total_balance'] != null){
+
+                                            $(".oldbalanceamount").val(response[i]['total_balance']);
+                                            $('.saleold_balance').text(response[i]['total_balance']);
+                                            $(".salesbalancetype").val('plus');
+
+                                            var gross_amount = $(".grand_total").val();
+                                            var grand_total = Number(gross_amount) + Number(response[i]['total_balance']);
+                                            $('.overallamount').val(grand_total.toFixed(2));
+                                            $('.sale_overallamount').text(grand_total.toFixed(2));
+
+                                            var salepaid_amount = $(".salepaid_amount").val();
+                                            var pending_amount = Number(grand_total) - Number(salepaid_amount);
+                                            $('.balance_amount').val(pending_amount.toFixed(2));
+                                            $('.salebalance_amount').text(pending_amount.toFixed(2));
+                                        }
+                                    }
+                                }else {
+                                    $(".oldbalanceamount").val(0);
+                                            $('.saleold_balance').text(0);
+                                            $(".salesbalancetype").val('plus');
+                                }
+                                
+
+
+                                        
                             }
                         });
                 }
@@ -321,8 +367,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -400,8 +458,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -479,8 +549,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                               var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -560,8 +642,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -640,8 +734,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                               var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -720,8 +826,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -800,8 +918,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -881,8 +1011,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -962,8 +1104,20 @@ $(document).ready(function() {
                                                 $(".grand_total").val(sum.toFixed(2));
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -1051,10 +1205,19 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1088,19 +1251,56 @@ $(document).ready(function() {
                                 },
                         dataType: 'json',
                             success: function(response) {
-                                console.log(response);
-                                        $(".purchaseoldbalanceamount").val(response['data']);
-                                        $('.purchaseold_balance').text(response['data']);
 
-                                        var gross_amount = $(".purchasegrandtotal").val();
-                                        var grand_total = Number(response['data']) + Number(gross_amount);
-                                        $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                        $('.purchase_overallamount').text(grand_total.toFixed(2));
 
-                                        var purchasepaid_amount = $(".purchasepaid_amount").val();
-                                        var pending_amount = Number(grand_total) - Number(purchasepaid_amount);
-                                        $('.purchasebalanceamount').val(pending_amount.toFixed(2));
-                                        $('.purchasebalance_amount').text(pending_amount.toFixed(2));
+                                    if(response){
+                                    var output = response.length;
+                                    console.log(response);
+                                    for (var i = 0; i < output; i++) {
+
+                                        //console.log(response[i]['total_balance']);
+
+                                        if(response[i]['total_balance'] != null){
+
+                                            $(".purchaseoldbalanceamount").val(response[i]['total_balance']);
+                                            $('.purchaseold_balance').text(response[i]['total_balance']);
+                                            $(".purchasebalancetype").val('minus');
+
+                                            var gross_amount = $(".purchasegrandtotal").val();
+                                            var grand_total = Number(gross_amount) - Number(response[i]['total_balance']);
+                                            $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                            $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                            var purchasepaid_amount = $(".purchasepaid_amount").val();
+                                            var pending_amount = Number(grand_total) - Number(purchasepaid_amount);
+                                            $('.purchasebalanceamount').val(pending_amount.toFixed(2));
+                                            $('.purchasebalance_amount').text(pending_amount.toFixed(2));
+
+                                        }else if(response[i]['purchase_balance'] != null){
+
+                                            $(".purchaseoldbalanceamount").val(response[i]['purchase_balance']);
+                                            $('.purchaseold_balance').text(response[i]['purchase_balance']);
+                                            $(".purchasebalancetype").val('plus');
+
+                                            var gross_amount = $(".purchasegrandtotal").val();
+                                            var grand_total = Number(gross_amount) + Number(response[i]['purchase_balance']);
+                                            $('.purchaseoverallamount').val(grand_total.toFixed(2));
+                                            $('.purchase_overallamount').text(grand_total.toFixed(2));
+
+                                            var purchasepaid_amount = $(".purchasepaid_amount").val();
+                                            var pending_amount = Number(grand_total) - Number(purchasepaid_amount);
+                                            $('.purchasebalanceamount').val(pending_amount.toFixed(2));
+                                            $('.purchasebalance_amount').text(pending_amount.toFixed(2));
+                                        }
+                                    }
+                                }else {
+                                    $(".purchaseoldbalanceamount").val(0);
+                                            $('.saleold_balance').text(0);
+                                            $(".salesbalancetype").val('plus');
+                                }
+                                
+
+                               
                             }
                         });
                 }
@@ -1225,10 +1425,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                  var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1307,10 +1514,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1389,10 +1603,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1471,10 +1692,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1553,10 +1781,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1635,10 +1870,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1717,10 +1959,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1798,10 +2047,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1880,10 +2136,17 @@ $(document).ready(function() {
                                                 $(".purchasegrandtotal").val(sum.toFixed(2));
                                                 $('.purchasegrand_total').text('₹ ' + sum.toFixed(2));
 
-                                                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                                                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                                                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                                                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                                                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -1924,10 +2187,22 @@ $(document).on('click', '.remove-tr', function() {
                 $('.balance_amount').val(sum.toFixed(2));
                 $('.salebalance_amount').text('₹ ' + sum.toFixed(2));
 
-                var oldbalanceamount = $(".oldbalanceamount").val();
-                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
-                $('.overallamount').val(grand_total.toFixed(2));
-                $('.sale_overallamount').text(grand_total.toFixed(2));
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+
+                $('.overallamount').val(grand_total);
+                $('.sale_overallamount').text(grand_total);
 
                 var salepaid_amount = $('.salepaid_amount').val();
                 var balance = Number(grand_total) - Number(salepaid_amount);
@@ -1956,10 +2231,21 @@ $(document).on("keyup", "input[name*=doller_rate]", function() {
                 $('.balance_amount').val(sum.toFixed(2));
                 $('.salebalance_amount').text('₹ ' + sum.toFixed(2));
 
-                var oldbalanceamount = $(".oldbalanceamount").val();
-                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
-                $('.overallamount').val(grand_total.toFixed(2));
-                $('.sale_overallamount').text(grand_total.toFixed(2));
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+
+                $('.overallamount').val(grand_total);
+                $('.sale_overallamount').text(grand_total);
 
                 var salepaid_amount = $('.salepaid_amount').val();
                 var balance = Number(grand_total) - Number(salepaid_amount);
@@ -1986,10 +2272,20 @@ $(document).on("keyup", "input[name*=sale_count]", function() {
                 $('.balance_amount').val(sum.toFixed(2));
                 $('.salebalance_amount').text('₹ ' + sum.toFixed(2));
 
-                var oldbalanceamount = $(".oldbalanceamount").val();
-                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
-                $('.overallamount').val(grand_total.toFixed(2));
-                $('.sale_overallamount').text(grand_total.toFixed(2));
+                                                var salesbalancetype = $('#salesbalancetype').val();
+                                                if(salesbalancetype == 'plus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(balance_haveto_give);
+
+                                                }else if(salesbalancetype == 'minus'){
+
+                                                    var balance_haveto_give = $(".oldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(balance_haveto_give);
+
+                                                }
+                $('.overallamount').val(grand_total);
+                $('.sale_overallamount').text(grand_total);
 
                 var salepaid_amount = $('.salepaid_amount').val();
                 var balance = Number(grand_total) - Number(salepaid_amount);
@@ -2052,10 +2348,17 @@ $(document).on('click', '.remove-purchasetr', function() {
                 $('.purchasebalanceamount').val(sum.toFixed(2));
                 $('.purchasebalance_amount').text('₹ ' + sum.toFixed(2));
 
-                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -2084,10 +2387,17 @@ $(document).on("keyup", "input[name*=purchasedoller_rate]", function() {
                 $('.purchasebalanceamount').val(sum.toFixed(2));
                 $('.purchasebalance_amount').text('₹ ' + sum.toFixed(2));
 
-                var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
-                var grand_total = Number(purchaseoldbalanceamount) + Number(sum.toFixed(2));
-                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                 var balance = Number(grand_total) - Number(purchasepaid_amount);
@@ -2114,10 +2424,17 @@ $(document).on("keyup", "input[name*=purchase_count]", function() {
                 $('.purchasebalanceamount').val(sum.toFixed(2));
                 $('.purchasebalance_amount').text('₹ ' + sum.toFixed(2));
 
-                var oldbalanceamount = $(".purchaseoldbalanceamount").val();
-                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
-                $('.purchaseoverallamount').val(grand_total.toFixed(2));
-                $('.purchase_overallamount').text(grand_total.toFixed(2));
+                                                var purchasebalancetype = $('#purchasebalancetype').val();
+                                                if(purchasebalancetype == 'plus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) + Number(purchaseoldbalanceamount);
+                                                }else if(purchasebalancetype == 'minus'){
+                                                    var purchaseoldbalanceamount = $(".purchaseoldbalanceamount").val();
+                                                    var grand_total = Number(sum.toFixed(2)) - Number(purchaseoldbalanceamount);
+                                                }
+
+                                                $('.purchaseoverallamount').val(grand_total);
+                                                $('.purchase_overallamount').text(grand_total);
 
                 var purchasepaid_amount = $('.purchasepaid_amount').val();
                 var balance = Number(grand_total) - Number(purchasepaid_amount);

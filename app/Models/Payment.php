@@ -14,9 +14,11 @@ class Payment extends Model
         'total_amount',
         'total_paid',
         'total_balance',
+        'sales_id'.
         'purchase_customerid',
         'purchase_amount',
         'purchase_paid',
-        'purchase_balance'
+        'purchase_balance',
+        'purchase_id'
     ];
 }

@@ -45,8 +45,7 @@ class CustomerController extends Controller
 
 
         $customerid = $data->id;
-        $PaymentBalanceDAta = Payment::where('customer_id', '=', $customerid)->first();
-        if($PaymentBalanceDAta == ""){
+        
             $balance_amount = $request->get('current_balance');
 
             if($balance_amount != ""){
@@ -58,8 +57,6 @@ class CustomerController extends Controller
                 $Payment->total_balance = $balance_amount;
                 $Payment->save();
             }
-            
-        }
 
         return redirect()->route('customer.index')->with('message', 'Added !');
     }
@@ -108,35 +105,42 @@ class CustomerController extends Controller
 
         $salecustomer_id = request()->get('salecustomer_id');
 
-        $last_idrow = Payment::where('customer_id', '=', $salecustomer_id)->first();
-
+        $last_idrow = Payment::where('customer_id', '=', $salecustomer_id)->latest('id')->first();
         if($last_idrow != ""){
-            if($last_idrow->total_balance != NULL){
-                $userData['data'] = $last_idrow->total_balance;
-            }
+            $output[] = array(
+                'total_balance' => $last_idrow->total_balance,
+                'purchase_balance' => $last_idrow->purchase_balance,
+            );
         }else {
-            $userData['data'] = 0;
+            $output[] = array(
+                'total_balance' => 0,
+                'purchase_balance' => 0,
+            );
         }
 
-        echo json_encode($userData);
+        echo json_encode($output);
     }
 
 
-    public function getoldbalanceforpurchase()
+    public function getoldbalanceforsales()
     {
 
-        $purchasecustomer_id = request()->get('purchasecustomer_id');
+        $purchasecustomer_id = request()->get('salecustomer_id');
 
-        $last_idrow = Payment::where('purchase_customerid', '=', $purchasecustomer_id)->first();
-
+        $last_idrow = Payment::where('customer_id', '=', $purchasecustomer_id)->latest('id')->first();
         if($last_idrow != ""){
-            if($last_idrow->purchase_balance != NULL){
-                $userData['data'] = $last_idrow->purchase_balance;
-            }
+            $output[] = array(
+                'total_balance' => $last_idrow->total_balance,
+                'purchase_balance' => $last_idrow->purchase_balance,
+            );
         }else {
-            $userData['data'] = 0;
+            $output[] = array(
+                'total_balance' => 0,
+                'purchase_balance' => 0,
+            );
         }
+        
 
-        echo json_encode($userData);
+        echo json_encode($output);
     }
 }

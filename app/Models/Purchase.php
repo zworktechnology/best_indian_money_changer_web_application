@@ -17,6 +17,7 @@ class Purchase extends Model
         'currency_id',
         'customer_id',
         'grand_total',
+        'purchasebalancetype',
         'oldbalanceamount',
         'overallamount',
         'paid_amount',
