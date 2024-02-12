@@ -207,8 +207,12 @@ class SaleController extends Controller
 
             $grand_total = $request->get('grand_total');
             $paid_amount = $request->get('paid_amount');
+            $oldbalanceamount = $request->get('oldbalanceamount');
 
-            $new_grossamount = $total_amount + $grand_total;
+
+            $updted_gross = $grand_total - $oldbalanceamount;
+
+            $new_grossamount = $total_amount + $updted_gross;
             $new_paid = $total_paid + $paid_amount;
             $new_balance = $new_grossamount - $new_paid;
 
@@ -265,11 +269,14 @@ class SaleController extends Controller
 
             $gross_amount = $request->get('grand_total');
             $payable_amount = $request->get('paid_amount');
+            $oldbalanceamount = $request->get('oldbalanceamount');
+
+            $updatedgross = $gross_amount - $oldbalanceamount;
 
 
            $editedgross = $old_grossamount - $oldentry_grossamount;
            $editedpaid = $old_paid - $oldentry_paid;
-           $newgross = $editedgross + $gross_amount;
+           $newgross = $editedgross + $updatedgross;
            $newpaid = $editedpaid + $payable_amount;
 
             $new_balance = $newgross - $newpaid;

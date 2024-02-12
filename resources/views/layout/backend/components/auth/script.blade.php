@@ -190,7 +190,7 @@ $(document).ready(function() {
                                         $('.saleold_balance').text(response['data']);
 
                                         var gross_amount = $(".grand_total").val();
-                                        var grand_total = Number(response['data']) + Number(gross_amount);
+                                        var grand_total = Number(gross_amount) - Number(response['data']);
                                         $('.overallamount').val(grand_total.toFixed(2));
                                         $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -322,7 +322,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -401,7 +401,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -480,7 +480,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -561,7 +561,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -641,7 +641,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -721,7 +721,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -801,7 +801,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -882,7 +882,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -963,7 +963,7 @@ $(document).ready(function() {
                                                 $('.salegrand_total').text('₹ ' + sum.toFixed(2));
 
                                                 var oldbalanceamount = $(".oldbalanceamount").val();
-                                                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                                                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                                                 $('.overallamount').val(grand_total.toFixed(2));
                                                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -1925,7 +1925,7 @@ $(document).on('click', '.remove-tr', function() {
                 $('.salebalance_amount').text('₹ ' + sum.toFixed(2));
 
                 var oldbalanceamount = $(".oldbalanceamount").val();
-                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                 $('.overallamount').val(grand_total.toFixed(2));
                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -1957,7 +1957,7 @@ $(document).on("keyup", "input[name*=doller_rate]", function() {
                 $('.salebalance_amount').text('₹ ' + sum.toFixed(2));
 
                 var oldbalanceamount = $(".oldbalanceamount").val();
-                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                 $('.overallamount').val(grand_total.toFixed(2));
                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
@@ -1987,7 +1987,7 @@ $(document).on("keyup", "input[name*=sale_count]", function() {
                 $('.salebalance_amount').text('₹ ' + sum.toFixed(2));
 
                 var oldbalanceamount = $(".oldbalanceamount").val();
-                var grand_total = Number(oldbalanceamount) + Number(sum.toFixed(2));
+                var grand_total = Number(sum.toFixed(2)) - Number(oldbalanceamount);
                 $('.overallamount').val(grand_total.toFixed(2));
                 $('.sale_overallamount').text(grand_total.toFixed(2));
 
