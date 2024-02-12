@@ -64,7 +64,7 @@
                                                         <th style="width:19%;">Currency</th>
                                                         <th style="width:13%;">Currency Optimal</th>
                                                         <th style="width:15%">Rate / Doller</th>
-                                                        <th style="width:15%">Total</th>
+                                                        <th style="width:15%" hidden>Total</th>
                                                         <th style="width:10%;">Count</th>
                                                         <th style="width:13%;">Total Amount</th>
                                                         <th style="width:8%;">Action</th>
@@ -109,7 +109,7 @@
                                                                 value="{{ $SaleProducts_arr->currencyoptimal_amount }}" required />
                                                         </td>
                                                         <td><input type="text" class="form-control doller_rate" id="doller_rate1" name="doller_rate[]" placeholder="Rate" value="{{ $SaleProducts_arr->doller_rate }}"/></td>
-                                                        <td><input type="text" class="form-control dollertotal" id="dollertotal1" name="dollertotal[]" readonly value="{{ $SaleProducts_arr->dollertotal }}"/></td>
+                                                        <td hidden><input type="text" class="form-control dollertotal" id="dollertotal1" name="dollertotal[]" readonly value="{{ $SaleProducts_arr->dollertotal }}"/></td>
                                                         <td><input type="text" class="form-control sale_count"
                                                                  id="sale_count1" name="sale_count[]"
                                                                 placeholder="Count" value="{{ $SaleProducts_arr->count }}"/></td>
@@ -119,7 +119,7 @@
                                                         <td><button class="additemplus_button addsalefields" type="button" id="" value="Add"><i class="fe fe-plus-circle"></i></button>
                                                         <button class="additemminus_button remove-tr" type="button" id="" value="Add"><i class="fe fe-minus-circle"></i></button>
                                                         </td>
-                                                        
+
                                                     </tr>
                                                     @endforeach
                                                 </tbody>

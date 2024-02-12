@@ -63,7 +63,7 @@
                                                         <th style="width:19%;">Currency</th>
                                                         <th style="width:13%;">Currency Optimal</th>
                                                         <th style="width:15%">Rate / Doller</th>
-                                                        <th style="width:15%">Total</th>
+                                                        <th style="width:15%" hidden>Total</th>
                                                         <th style="width:10%;">Count</th>
                                                         <th style="width:13%;">Total Amount</th>
                                                         <th style="width:8%;">Action</th>
@@ -100,7 +100,7 @@
                                                                 value="" required />
                                                         </td>
                                                         <td><input type="text" class="form-control purchasedoller_rate" id="purchasedoller_rate1" name="purchasedoller_rate[]" placeholder="Rate" /></td>
-                                                        <td><input type="text" class="form-control purchasedollertotal" id="purchasedollertotal1" name="purchasedollertotal[]" readonly /></td>
+                                                        <td hidden><input type="text" class="form-control purchasedollertotal" id="purchasedollertotal1" name="purchasedollertotal[]" readonly /></td>
                                                         <td><input type="text" class="form-control purchase_count"
                                                                  id="purchase_count1" name="purchase_count[]"
                                                                 placeholder="Qty" /></td>
