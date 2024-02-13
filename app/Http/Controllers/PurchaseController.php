@@ -47,6 +47,14 @@ class PurchaseController extends Controller
                 );
             }
 
+            $latest = Payment::where('customer_id', '=', $datas->customer_id)->latest('id')->first();
+            if($latest->purchase_id != ""){
+                $latestid = $latest->purchase_id;
+            }else {
+                $latestid = '';
+            }
+
+
            
 
             $Purchasedata[] = array(
@@ -64,6 +72,7 @@ class PurchaseController extends Controller
                 'note' => $datas->note,
                 'id' => $datas->id,
                 'products' => $products,
+                'latestid' => $latestid,
             );
         }
 
@@ -104,11 +113,11 @@ class PurchaseController extends Controller
                 );
             }
 
-            $latest = Purchase::where('soft_delete', '!=', 1)->where('customer_id', '=', $datas->customer_id)->latest('id')->first();
-            if($latest != ""){
-                $latestid = 'yes';
+            $latest = Payment::where('customer_id', '=', $datas->customer_id)->latest('id')->first();
+            if($latest->purchase_id != ""){
+                $latestid = $latest->purchase_id;
             }else {
-                $latestid = 'no';
+                $latestid = '';
             }
 
             $Purchasedata[] = array(
@@ -126,6 +135,7 @@ class PurchaseController extends Controller
                 'note' => $datas->note,
                 'id' => $datas->id,
                 'products' => $products,
+                'latestid' => $latestid,
             );
         }
 

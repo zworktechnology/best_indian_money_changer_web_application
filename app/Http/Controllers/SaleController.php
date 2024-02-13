@@ -47,7 +47,12 @@ class SaleController extends Controller
                 );
             }
 
-            
+            $latest = Payment::where('customer_id', '=', $datas->customer_id)->latest('id')->first();
+            if($latest->sales_id != ""){
+                $latestid = $latest->sales_id;
+            }else {
+                $latestid = '';
+            }
 
             $saledata[] = array(
                 'unique_id' => $datas->unique_id,
@@ -64,6 +69,7 @@ class SaleController extends Controller
                 'note' => $datas->note,
                 'id' => $datas->id,
                 'products' => $products,
+                'latestid' => $latestid,
             );
         }
 
@@ -105,6 +111,14 @@ class SaleController extends Controller
                 );
             }
 
+            $latest = Payment::where('customer_id', '=', $datas->customer_id)->latest('id')->first();
+            if($latest->sales_id != ""){
+                $latestid = $latest->sales_id;
+            }else {
+                $latestid = '';
+            }
+
+
             $saledata[] = array(
                 'unique_id' => $datas->unique_id,
                 'date' => $datas->date,
@@ -120,6 +134,7 @@ class SaleController extends Controller
                 'id' => $datas->id,
                 'billno' => $datas->billno,
                 'products' => $products,
+                'latestid' => $latestid,
             );
         }
 

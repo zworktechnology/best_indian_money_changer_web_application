@@ -62,12 +62,12 @@
                                                 <td>{{ $Purchasedatas['paid_amount'] }}</td>
                                                 <td>
                                                     <ul class="list-unstyled hstack gap-1 mb-0">
-                                                  
+                                                    @if ($Purchasedatas['latestid'] == $Purchasedatas['id'])
                                                     <li>
                                                             <a href="{{ route('purchase.edit', ['unique_id' => $Purchasedatas['unique_id']]) }}"
                                                                 class="badge" style="color:#28084b;background: #a9ac11;">Edit</a>
                                                     </li>
-                                                   
+                                                    @endif
 
                                                     <li>
                                                         <a class="badge" href="#purchaseview{{ $Purchasedatas['unique_id'] }}" data-bs-toggle="modal"

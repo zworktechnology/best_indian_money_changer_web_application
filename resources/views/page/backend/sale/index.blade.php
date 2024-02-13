@@ -62,10 +62,12 @@
                                                 <td>{{ $saledatas['paid_amount'] }}</td>
                                                 <td>
                                                     <ul class="list-unstyled hstack gap-1 mb-0">
+                                                    @if ($saledatas['latestid'] == $saledatas['id'])
                                                     <li >
                                                             <a href="{{ route('sale.edit', ['unique_id' => $saledatas['unique_id']]) }}"
                                                                 class="badge" style="color:#28084b;background: #a9ac11;">Edit</a>
                                                     </li>
+                                                    @endif
                                                     <li>
                                                         <a class="badge" href="#saleview{{ $saledatas['unique_id'] }}" data-bs-toggle="modal"
                                                         data-bs-target=".saleview-modal-xl{{ $saledatas['unique_id'] }}" style="color: #f8f9fa;background: #8068dc;">View</a>
